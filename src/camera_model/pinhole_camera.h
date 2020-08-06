@@ -19,10 +19,10 @@ public:
 private:
   struct IntrincsicParameter
   {
-    const float fx;
-    const float fy;
-    const float cx;
-    const float cy;
+    float fx;
+    float fy;
+    float cx;
+    float cy;
   };
   IntrincsicParameter intrinsic_;
 };

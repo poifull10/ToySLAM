@@ -10,6 +10,6 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 find_package(OpenCV REQUIRED)
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${OpenCV_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
