@@ -12,18 +12,18 @@ public:
   ~PinholeCamera() = default;
   PinholeCamera& operator=(PinholeCamera&) = default;
 
-  void setIntrinsic(const std::unordered_map<std::string, float>&) override;
-  cv::Vec2d project(const cv::Vec3d&) const override;
-  cv::Vec3d unproject(const cv::Vec2d&) const override;
-
-private:
+  void setIntrinsic(const std::unordered_map<std::string, double>&) override;
+  std::array<double, 2> project(const std::array<double, 3>& p) const override;
+  std::array<double, 3> unproject(const std::array<double, 2>&) const override;
   struct IntrincsicParameter
   {
-    float fx;
-    float fy;
-    float cx;
-    float cy;
+    double fx;
+    double fy;
+    double cx;
+    double cy;
   };
+
+private:
   IntrincsicParameter intrinsic_;
 };
 } // namespace tsfm

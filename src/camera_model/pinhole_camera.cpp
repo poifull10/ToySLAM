@@ -1,11 +1,33 @@
 #include "pinhole_camera.h"
 
+#include <iostream>
 #include <stdexcept>
 
 namespace tsfm
 {
+
+namespace
+{
+cv::Mat constructK(const PinholeCamera::IntrincsicParameter& intr)
+{
+  cv::Mat mat = cv::Mat::eye(3, 3, CV_64F);
+  mat.at<double>(0, 0) = intr.fx;
+  mat.at<double>(0, 2) = intr.cx;
+  mat.at<double>(1, 1) = intr.fy;
+  mat.at<double>(1, 2) = intr.cy;
+  return mat;
+}
+cv::Mat constructVVec(const std::array<double, 3>& p)
+{
+  cv::Mat mat = cv::Mat::zeros(3, 1, CV_64F);
+  mat.at<double>(0, 0) = p[0];
+  mat.at<double>(1, 0) = p[1];
+  mat.at<double>(2, 0) = p[2];
+  return mat;
+}
+} // namespace
 void PinholeCamera::setIntrinsic(
-  const std::unordered_map<std::string, float>& param)
+  const std::unordered_map<std::string, double>& param)
 {
   if (param.count("fx") == 0)
   {
@@ -30,12 +52,18 @@ void PinholeCamera::setIntrinsic(
   intrinsic_ = PinholeCamera::IntrincsicParameter{
     param.at("fx"), param.at("fy"), param.at("cx"), param.at("cy")};
 }
-cv::Vec2d PinholeCamera::project(const cv::Vec3d&) const
+std::array<double, 2> PinholeCamera::project(
+  const std::array<double, 3>& p) const
 {
-  return cv::Vec2d{};
+  cv::Mat K = constructK(intrinsic_);
+  cv::Mat vP = constructVVec(p);
+  cv::Mat projected = K * vP;
+  return {projected.at<double>(0, 0) / projected.at<double>(2, 0),
+          projected.at<double>(1, 0) / projected.at<double>(2, 0)};
 }
-cv::Vec3d PinholeCamera::unproject(const cv::Vec2d&) const
+std::array<double, 3> PinholeCamera::unproject(
+  const std::array<double, 2>& p) const
 {
-  return cv::Vec3d{};
+  return {};
 }
 } // namespace tsfm

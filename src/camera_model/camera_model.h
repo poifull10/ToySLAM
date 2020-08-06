@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <unordered_map>
@@ -14,8 +15,10 @@ public:
   ~CameraModel() = default;
   CameraModel& operator=(CameraModel&) = default;
 
-  virtual void setIntrinsic(const std::unordered_map<std::string, float>&) = 0;
-  virtual cv::Vec2d project(const cv::Vec3d&) const = 0;
-  virtual cv::Vec3d unproject(const cv::Vec2d&) const = 0;
+  virtual void setIntrinsic(const std::unordered_map<std::string, double>&) = 0;
+  virtual std::array<double, 2> project(
+    const std::array<double, 3>& p) const = 0;
+  virtual std::array<double, 3> unproject(
+    const std::array<double, 2>&) const = 0;
 };
 } // namespace tsfm
