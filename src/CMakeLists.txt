@@ -12,3 +12,4 @@ find_package(OpenCV REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
