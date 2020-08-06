@@ -25,6 +25,22 @@ cv::Mat constructVVec(const std::array<double, 3>& p)
   mat.at<double>(2, 0) = p[2];
   return mat;
 }
+
+cv::Mat constructVVec(const std::array<double, 2>& p, bool homography = false)
+{
+  if (homography)
+  {
+    cv::Mat mat = cv::Mat::zeros(3, 1, CV_64F);
+    mat.at<double>(0, 0) = p[0];
+    mat.at<double>(1, 0) = p[1];
+    mat.at<double>(2, 0) = 1;
+    return mat;
+  }
+  cv::Mat mat = cv::Mat::zeros(2, 1, CV_64F);
+  mat.at<double>(0, 0) = p[0];
+  mat.at<double>(1, 0) = p[1];
+  return mat;
+}
 } // namespace
 void PinholeCamera::setIntrinsic(
   const std::unordered_map<std::string, double>& param)
@@ -64,6 +80,10 @@ std::array<double, 2> PinholeCamera::project(
 std::array<double, 3> PinholeCamera::unproject(
   const std::array<double, 2>& p) const
 {
-  return {};
+  cv::Mat K = constructK(intrinsic_);
+  cv::Mat vP = constructVVec(p, true);
+  cv::Mat unprojected = K.inv() * vP;
+  return {unprojected.at<double>(0, 0) / unprojected.at<double>(2, 0),
+          unprojected.at<double>(1, 0) / unprojected.at<double>(2, 0), 1.0F};
 }
 } // namespace tsfm
