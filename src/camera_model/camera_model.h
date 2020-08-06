@@ -1,8 +1,9 @@
 #pragma once
 #include <array>
-#include <opencv2/opencv.hpp>
 #include <string>
 #include <unordered_map>
+
+#include "../geo_primitive/vector.h"
 
 namespace tsfm
 {
@@ -16,9 +17,7 @@ public:
   CameraModel& operator=(CameraModel&) = default;
 
   virtual void setIntrinsic(const std::unordered_map<std::string, double>&) = 0;
-  virtual std::array<double, 2> project(
-    const std::array<double, 3>& p) const = 0;
-  virtual std::array<double, 3> unproject(
-    const std::array<double, 2>&) const = 0;
+  virtual Vec2 project(const Vec3& p) const = 0;
+  virtual Vec3 unproject(const Vec2&) const = 0;
 };
 } // namespace tsfm

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "../util/cv_primitive.h"
+
 namespace tsfm
 {
 
@@ -15,30 +17,6 @@ cv::Mat constructK(const PinholeCamera::IntrincsicParameter& intr)
   mat.at<double>(0, 2) = intr.cx;
   mat.at<double>(1, 1) = intr.fy;
   mat.at<double>(1, 2) = intr.cy;
-  return mat;
-}
-cv::Mat constructVVec(const std::array<double, 3>& p)
-{
-  cv::Mat mat = cv::Mat::zeros(3, 1, CV_64F);
-  mat.at<double>(0, 0) = p[0];
-  mat.at<double>(1, 0) = p[1];
-  mat.at<double>(2, 0) = p[2];
-  return mat;
-}
-
-cv::Mat constructVVec(const std::array<double, 2>& p, bool homography = false)
-{
-  if (homography)
-  {
-    cv::Mat mat = cv::Mat::zeros(3, 1, CV_64F);
-    mat.at<double>(0, 0) = p[0];
-    mat.at<double>(1, 0) = p[1];
-    mat.at<double>(2, 0) = 1;
-    return mat;
-  }
-  cv::Mat mat = cv::Mat::zeros(2, 1, CV_64F);
-  mat.at<double>(0, 0) = p[0];
-  mat.at<double>(1, 0) = p[1];
   return mat;
 }
 } // namespace
@@ -68,20 +46,20 @@ void PinholeCamera::setIntrinsic(
   intrinsic_ = PinholeCamera::IntrincsicParameter{
     param.at("fx"), param.at("fy"), param.at("cx"), param.at("cy")};
 }
-std::array<double, 2> PinholeCamera::project(
-  const std::array<double, 3>& p) const
+
+Vec2 PinholeCamera::project(const Vec3& p) const
 {
   cv::Mat K = constructK(intrinsic_);
-  cv::Mat vP = constructVVec(p);
+  cv::Mat vP = vec3ToCvMat(p);
   cv::Mat projected = K * vP;
   return {projected.at<double>(0, 0) / projected.at<double>(2, 0),
           projected.at<double>(1, 0) / projected.at<double>(2, 0)};
 }
-std::array<double, 3> PinholeCamera::unproject(
-  const std::array<double, 2>& p) const
+
+Vec3 PinholeCamera::unproject(const Vec2& p) const
 {
   cv::Mat K = constructK(intrinsic_);
-  cv::Mat vP = constructVVec(p, true);
+  cv::Mat vP = vec2ToCvMat(p, true);
   cv::Mat unprojected = K.inv() * vP;
   return {unprojected.at<double>(0, 0) / unprojected.at<double>(2, 0),
           unprojected.at<double>(1, 0) / unprojected.at<double>(2, 0), 1.0F};
