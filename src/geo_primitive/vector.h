@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include <functional>
 #include <initializer_list>
 #include <vector>
@@ -39,6 +40,26 @@ Vector<T, N> apply(const Vector<T, N>& vec, std::function<T(T)> func)
   }
 
   return Vector<T, N>(data);
+};
+
+template <typename T, int N>
+T sum(const Vector<T, N>& vec)
+{
+  T ret = 0;
+  for (int i = 0; i < N; i++)
+  {
+    ret += vec[i];
+  }
+  return ret;
+}
+
+template <typename T, int N>
+double norm(const Vector<T, N>& v)
+{
+  const auto v_squared =
+    apply(v, std::function<double(double)>([](double e) { return e * e; }));
+  const auto v_sum = sum(v_squared);
+  return std::sqrt(v_sum);
 };
 
 using Vec2 = Vector<double, 2>;
