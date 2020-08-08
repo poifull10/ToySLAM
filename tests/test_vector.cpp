@@ -38,7 +38,7 @@ TEST(Vector, norm)
 TEST(Vector, mult)
 {
   tsfm::Vec3 v3{1, -7, 3};
-  const auto actual = v3 / -2.0;
+  const auto actual = v3 * -2.0;
   EXPECT_NEAR(actual[0], -2, 1e-3);
   EXPECT_NEAR(actual[1], 14, 1e-3);
   EXPECT_NEAR(actual[2], -6, 1e-3);
