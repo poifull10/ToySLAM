@@ -23,7 +23,7 @@ public:
   ~Vector() = default;
   Vector(Vector&&) = default;
   Vector(const Vector&) = default;
-  Vector& operator=(Vector&) = default;
+  Vector& operator=(const Vector&) = default;
   T operator[](int i) const { return data_[i]; }
 
 private:
