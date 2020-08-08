@@ -3,6 +3,7 @@ add_library(
   ${PROJECT_NAME}
   tiny_sfm.cpp
   camera_model/pinhole_camera.cpp
+  initializer/pose_initializer.cpp
 )
 
 add_library(TSfM::TSfM ALIAS ${PROJECT_NAME})
