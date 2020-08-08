@@ -49,18 +49,18 @@ void PinholeCamera::setIntrinsic(
 
 Vec2 PinholeCamera::project(const Vec3& p) const
 {
-  cv::Mat K = constructK(intrinsic_);
-  cv::Mat vP = vec3ToCvMat(p);
-  cv::Mat projected = K * vP;
+  const cv::Mat K = constructK(intrinsic_);
+  const cv::Mat vP = vec3ToCvMat(p);
+  const cv::Mat projected = K * vP;
   return {projected.at<double>(0, 0) / projected.at<double>(2, 0),
           projected.at<double>(1, 0) / projected.at<double>(2, 0)};
 }
 
 Vec3 PinholeCamera::unproject(const Vec2& p) const
 {
-  cv::Mat K = constructK(intrinsic_);
-  cv::Mat vP = vec2ToCvMat(p, true);
-  cv::Mat unprojected = K.inv() * vP;
+  const cv::Mat K = constructK(intrinsic_);
+  const cv::Mat vP = vec2ToCvMat(p, true);
+  const cv::Mat unprojected = K.inv() * vP;
   return {unprojected.at<double>(0, 0) / unprojected.at<double>(2, 0),
           unprojected.at<double>(1, 0) / unprojected.at<double>(2, 0), 1.0F};
 }
