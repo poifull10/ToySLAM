@@ -62,6 +62,28 @@ double norm(const Vector<T, N>& v)
   return std::sqrt(v_sum);
 };
 
+template <typename T, int N>
+Vector<T, N> operator*(const Vector<T, N>& v, T val)
+{
+  std::array<T, N> data;
+  for (int i = 0; i < N; i++)
+  {
+    data[i] = v[i] * val;
+  }
+  return Vector<T, N>(data);
+}
+
+template <typename T, int N>
+Vector<T, N> operator/(const Vector<T, N>& v, T val)
+{
+  std::array<T, N> data;
+  for (int i = 0; i < N; i++)
+  {
+    data[i] = v[i] / val;
+  }
+  return Vector<T, N>(data);
+}
+
 using Vec2 = Vector<double, 2>;
 using Vec3 = Vector<double, 3>;
 using Vec4 = Vector<double, 4>;
