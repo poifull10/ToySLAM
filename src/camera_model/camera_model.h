@@ -7,6 +7,23 @@
 
 namespace tsfm
 {
+
+enum class CameraType
+{
+  pinhole
+};
+
+enum class DistortionType
+{
+  none
+};
+
+struct CameraDistortion
+{
+  CameraType camera;
+  DistortionType distortion;
+};
+
 class CameraModel
 {
 public:
