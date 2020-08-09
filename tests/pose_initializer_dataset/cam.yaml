@@ -1,3 +1,5 @@
+camera: pinhole
+distortion: none
 fx: 405.1404
 fy: 405.1404
 cx: 300.0
