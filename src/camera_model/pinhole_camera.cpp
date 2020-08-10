@@ -64,4 +64,14 @@ Vec3 PinholeCamera::unproject(const Vec2& p) const
   return {unprojected.at<double>(0, 0) / unprojected.at<double>(2, 0),
           unprojected.at<double>(1, 0) / unprojected.at<double>(2, 0), 1.0F};
 }
+
+cv::Mat PinholeCamera::K() const
+{
+  cv::Mat K = cv::Mat::eye(3, 3, CV_64F);
+  K.at<double>(0, 0) = intrinsic_.fx;
+  K.at<double>(1, 1) = intrinsic_.fy;
+  K.at<double>(0, 2) = intrinsic_.cx;
+  K.at<double>(1, 2) = intrinsic_.cy;
+  return K;
+}
 } // namespace tsfm

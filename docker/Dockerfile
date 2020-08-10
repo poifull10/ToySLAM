@@ -2,7 +2,7 @@ FROM ubuntu:focal
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   build-essential cmake ninja-build git ca-certificates \
-  libboost-all-dev \
+  libboost-all-dev libeigen3-dev \
   && rm -rf /var/lib/apt/lists/*
 
 ARG WORKSPACE=/build

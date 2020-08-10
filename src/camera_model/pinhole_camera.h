@@ -13,8 +13,9 @@ public:
   PinholeCamera& operator=(PinholeCamera&) = default;
 
   void setIntrinsic(const std::unordered_map<std::string, double>&) override;
-  virtual Vec2 project(const Vec3& p) const override;
-  virtual Vec3 unproject(const Vec2&) const override;
+  Vec2 project(const Vec3& p) const override;
+  Vec3 unproject(const Vec2&) const override;
+  cv::Mat K() const override;
   struct IntrincsicParameter
   {
     double fx;
