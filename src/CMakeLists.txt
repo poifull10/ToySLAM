@@ -5,6 +5,7 @@ add_library(
   camera_model/pinhole_camera.cpp
   initializer/pose_initializer.cpp
   matcher/image_matcher.cpp
+  ba/bundle_adjustment.cpp
   util/load_data.cpp
   geo_primitive/pose.cpp
   util/cv_primitive.cpp
