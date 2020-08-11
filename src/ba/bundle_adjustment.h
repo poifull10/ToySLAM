@@ -10,8 +10,8 @@ namespace tsfm
 class BundleAdjustment
 {
 public:
-  BundleAdjustment(double lambda = 1e-2) : frames_(), cm_(), lambda_(lambda) {}
-  ~BundleAdjustment() = default;
+  BundleAdjustment(double lambda = 1e-2);
+  ~BundleAdjustment();
 
   void addFrame(std::shared_ptr<Frame> frame);
   void addCameraModel(std::shared_ptr<CameraModel> cm);
@@ -19,8 +19,10 @@ public:
   double optimize(size_t N);
 
 private:
+  class Impl;
   std::vector<std::shared_ptr<Frame>> frames_;
   std::shared_ptr<CameraModel> cm_;
   double lambda_;
+  std::unique_ptr<Impl> impl_;
 };
 } // namespace tsfm

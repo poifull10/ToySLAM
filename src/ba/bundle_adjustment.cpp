@@ -5,6 +5,19 @@
 namespace tsfm
 {
 
+class BundleAdjustment::Impl
+{
+public:
+  Impl() {}
+  ~Impl() {}
+};
+
+BundleAdjustment::BundleAdjustment(double lambda)
+  : frames_(), cm_(), lambda_(lambda), impl_(std::make_unique<Impl>())
+{
+}
+BundleAdjustment::~BundleAdjustment(){};
+
 void BundleAdjustment::addFrame(std::shared_ptr<Frame> frame)
 {
   frames_.push_back(frame);
@@ -17,6 +30,7 @@ void BundleAdjustment::addCameraModel(std::shared_ptr<CameraModel> cm)
 
 void BundleAdjustment::initialization()
 {
+  assert(cm_ != nullptr);
   if (frames_.empty())
   {
     return;
