@@ -25,6 +25,7 @@ public:
   Vector(const Vector&) = default;
   Vector& operator=(const Vector&) = default;
   T operator[](int i) const { return data_[i]; }
+  T operator[](size_t i) const { return data_[i]; }
 
 private:
   std::array<T, N> data_;
@@ -56,8 +57,7 @@ T sum(const Vector<T, N>& vec)
 template <typename T, int N>
 double norm(const Vector<T, N>& v)
 {
-  const auto v_squared =
-    apply(v, std::function<double(double)>([](double e) { return e * e; }));
+  const auto v_squared = apply(v, std::function<double(double)>([](double e) { return e * e; }));
   const auto v_sum = sum(v_squared);
   return std::sqrt(v_sum);
 };
