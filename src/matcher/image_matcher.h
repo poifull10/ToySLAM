@@ -9,19 +9,26 @@
 namespace tsfm
 {
 namespace fs = boost::filesystem;
+
+struct MatchResult
+{
+  std::vector<Vec2> keypoints;
+  std::vector<size_t> imageIds;
+};
+
 class ImageMatcher
 {
 public:
-  ImageMatcher(std::shared_ptr<Image> image1, std::shared_ptr<Image> image2);
+  ImageMatcher(const std::vector<std::shared_ptr<Image>>& images);
   ~ImageMatcher();
 
   void extractFeatures();
-  std::vector<std::tuple<Vec2, Vec2>> match();
+  std::vector<MatchResult> match();
   void drawMatch(const fs::path& path);
 
 private:
   class Impl;
-  std::shared_ptr<Image> image1_, image2_;
   std::unique_ptr<Impl> impl_;
+  std::vector<std::shared_ptr<Image>> images_;
 };
 } // namespace tsfm
