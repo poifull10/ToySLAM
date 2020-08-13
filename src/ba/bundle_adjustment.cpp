@@ -12,10 +12,7 @@ public:
   ~Impl() {}
 };
 
-BundleAdjustment::BundleAdjustment(double lambda)
-  : frames_(), cm_(), lambda_(lambda), impl_(std::make_unique<Impl>())
-{
-}
+BundleAdjustment::BundleAdjustment(double lambda) : frames_(), cm_(), lambda_(lambda), impl_(std::make_unique<Impl>()) {}
 BundleAdjustment::~BundleAdjustment(){};
 
 void BundleAdjustment::addFrame(std::shared_ptr<Frame> frame)
@@ -46,8 +43,7 @@ void BundleAdjustment::initialization()
   for (size_t i = 1; i < frames_.size(); i++)
   {
     // TODO: validate pose
-    const auto estimatedPose =
-      pi(frames_[i - 1]->image(), frames_[i]->image(), *cm_);
+    const auto estimatedPose = pi({frames_[i - 1]->image(), frames_[i]->image()}, *cm_);
     frames_[i]->setPose(estimatedPose);
   }
 }
