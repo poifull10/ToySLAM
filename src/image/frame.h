@@ -11,10 +11,10 @@ namespace tsfm
 class Frame
 {
 public:
-  Frame(const std::string& imgPath) : image_(imgPath), pose_() {}
+  Frame(const std::string& imgPath, size_t id) : image_(imgPath, id), pose_() {}
   Image image()
   {
-    image.load();
+    image_.load();
     return image_;
   }
   Pose pose() const { return pose_; }
