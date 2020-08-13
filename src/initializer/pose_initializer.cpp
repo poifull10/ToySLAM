@@ -9,21 +9,20 @@
 
 namespace tsfm
 {
-Pose PoseInitializer::operator()(const Image& img1, const Image& img2,
-                                 const CameraModel& cm) const
+Pose PoseInitializer::operator()(const std::vector<std::shared_ptr<Image>>& images, const CameraModel& cm) const
 {
-  const auto img1_ptr = std::make_shared<Image>(img1);
-  const auto img2_ptr = std::make_shared<Image>(img2);
-  ImageMatcher im(img1_ptr, img2_ptr);
+  ImageMatcher im(images);
   im.extractFeatures();
-  const auto matched = im.match();
+  const auto& matched = im.match();
 
   assert(matched.size() >= 5);
 
   std::vector<cv::Point2f> points1, points2;
 
-  for (const auto [v1, v2] : matched)
+  for (const auto [keypoints, _] : matched)
   {
+    const auto v1 = keypoints[0];
+    const auto v2 = keypoints[1];
     points1.emplace_back(v1[0], v1[1]);
     points2.emplace_back(v2[0], v2[1]);
   }
@@ -31,9 +30,7 @@ Pose PoseInitializer::operator()(const Image& img1, const Image& img2,
   const cv::Mat K = cm.K();
   double apertureW, apertureH, fovx, fovy, focalLength, aspectRatio;
   cv::Point2d principalPoint;
-  cv::calibrationMatrixValues(K, img1.image().size(), apertureW, apertureH,
-                              fovx, fovy, focalLength, principalPoint,
-                              aspectRatio);
+  cv::calibrationMatrixValues(K, images[0]->image().size(), apertureW, apertureH, fovx, fovy, focalLength, principalPoint, aspectRatio);
   const cv::Mat E = cv::findEssentialMat(points1, points2, K);
   cv::Mat R, t;
   cv::recoverPose(E, points1, points2, R, t, focalLength);
@@ -49,7 +46,6 @@ Pose PoseInitializer::operator()(const Image& img1, const Image& img2,
   eigenR(2, 2) = R.at<double>(2, 2);
   Eigen::Quaterniond quat(eigenR);
 
-  return Pose({t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0)},
-              {quat.x(), quat.y(), quat.z(), quat.w()});
+  return Pose({t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0)}, {quat.x(), quat.y(), quat.z(), quat.w()});
 }
 } // namespace tsfm

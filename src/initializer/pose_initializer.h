@@ -10,7 +10,6 @@ class PoseInitializer
 {
 public:
   PoseInitializer() {}
-  Pose operator()(const Image& img1, const Image& img2,
-                  const CameraModel& cm) const;
+  Pose operator()(const std::vector<std::shared_ptr<Image>>& images, const CameraModel& cm) const;
 };
 } // namespace tsfm
