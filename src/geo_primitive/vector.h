@@ -84,6 +84,12 @@ Vector<T, N> operator/(const Vector<T, N>& v, T val)
   return Vector<T, N>(data);
 }
 
+template <typename T, int N>
+Vector<T, N> normalize(const Vector<T, N>& v)
+{
+  return v / tsfm::norm(v);
+}
+
 using Vec2 = Vector<double, 2>;
 using Vec3 = Vector<double, 3>;
 using Vec4 = Vector<double, 4>;

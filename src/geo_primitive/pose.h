@@ -18,6 +18,7 @@ public:
 
   Vec3 trans() const { return trans_; }
   Vec4 quat() const { return quat_; }
+  Pose inv() const;
 
   void normalize() { quat_ = quat_ / tsfm::norm(quat_); }
 
@@ -32,4 +33,7 @@ private:
   Vec3 trans_;
   Vec4 quat_;
 };
+
+Pose operator*(const Pose&, const Pose&);
+
 } // namespace tsfm
