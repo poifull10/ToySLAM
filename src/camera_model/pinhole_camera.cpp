@@ -20,8 +20,7 @@ cv::Mat constructK(const PinholeCamera::IntrincsicParameter& intr)
   return mat;
 }
 } // namespace
-void PinholeCamera::setIntrinsic(
-  const std::unordered_map<std::string, double>& param)
+void PinholeCamera::setIntrinsic(const std::unordered_map<std::string, double>& param)
 {
   if (param.count("fx") == 0)
   {
@@ -43,8 +42,7 @@ void PinholeCamera::setIntrinsic(
     throw std::invalid_argument("param needs cy");
   }
 
-  intrinsic_ = PinholeCamera::IntrincsicParameter{
-    param.at("fx"), param.at("fy"), param.at("cx"), param.at("cy")};
+  intrinsic_ = PinholeCamera::IntrincsicParameter{param.at("fx"), param.at("fy"), param.at("cx"), param.at("cy")};
 }
 
 Vec2 PinholeCamera::project(const Vec3& p) const
@@ -52,8 +50,7 @@ Vec2 PinholeCamera::project(const Vec3& p) const
   const cv::Mat K = constructK(intrinsic_);
   const cv::Mat vP = vec3ToCvMat(p);
   const cv::Mat projected = K * vP;
-  return {projected.at<double>(0, 0) / projected.at<double>(2, 0),
-          projected.at<double>(1, 0) / projected.at<double>(2, 0)};
+  return {projected.at<double>(0, 0) / projected.at<double>(2, 0), projected.at<double>(1, 0) / projected.at<double>(2, 0)};
 }
 
 Vec3 PinholeCamera::unproject(const Vec2& p) const
@@ -61,8 +58,7 @@ Vec3 PinholeCamera::unproject(const Vec2& p) const
   const cv::Mat K = constructK(intrinsic_);
   const cv::Mat vP = vec2ToCvMat(p, true);
   const cv::Mat unprojected = K.inv() * vP;
-  return {unprojected.at<double>(0, 0) / unprojected.at<double>(2, 0),
-          unprojected.at<double>(1, 0) / unprojected.at<double>(2, 0), 1.0F};
+  return {unprojected.at<double>(0, 0) / unprojected.at<double>(2, 0), unprojected.at<double>(1, 0) / unprojected.at<double>(2, 0), 1.0F};
 }
 
 cv::Mat PinholeCamera::K() const

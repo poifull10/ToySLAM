@@ -20,3 +20,10 @@ RUN mkdir -p ${WORKSPACE} \
   && ninja install \
   && cd / \
   && rm -rf ${WORKSPACE}
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  clang-format \
+  && rm -rf /var/lib/apt/lists/* \
+  && mkdir -p ${WORKSPACE} \
+  && cd ${WORKSPACE} \
+  && git clone https://github.com/Sarcasm/run-clang-format.git

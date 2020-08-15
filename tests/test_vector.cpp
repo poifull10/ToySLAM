@@ -11,8 +11,7 @@ TEST(Vector, constructor)
 TEST(Vector, apply)
 {
   tsfm::Vec3 v3{1, 2, 3};
-  auto actual = tsfm::apply(
-    v3, std::function<double(double)>([](double x) { return x * x - 3; }));
+  auto actual = tsfm::apply(v3, std::function<double(double)>([](double x) { return x * x - 3; }));
 
   EXPECT_NEAR(actual[0], -2, 1e-3);
   EXPECT_NEAR(actual[1], 1, 1e-3);
