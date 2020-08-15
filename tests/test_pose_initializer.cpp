@@ -1,7 +1,9 @@
 #include <camera_model/pinhole_camera.h>
+#include <glog/logging.h>
 #include <gtest/gtest.h>
 #include <image/image.h>
 #include <initializer/pose_initializer.h>
+#include <matcher/image_matcher.h>
 #include <util/load_data.h>
 #include <yaml-cpp/yaml.h>
 
@@ -24,11 +26,24 @@ TEST(PoseInitializer, estimatePose)
   tsfm::PinholeCamera pc;
   pc.setIntrinsic(data);
 
+  tsfm::ImageMatcher im({img1, img2});
+  im.extractFeatures();
+  im.match();
+  im.drawMatch("match.png");
+
   const auto pose = pi({img1, img2}, pc);
-  EXPECT_NEAR(pose.quat()[0], answer["rx"].as<double>(), 1e-1);
-  EXPECT_NEAR(pose.quat()[1], answer["ry"].as<double>(), 1e-1);
-  EXPECT_NEAR(pose.quat()[2], answer["rz"].as<double>(), 1e-1);
-  EXPECT_NEAR(pose.quat()[3], answer["rw"].as<double>(), 1e-1);
+  float sign = 1.F;
+  tsfm::Vec4 ans_quat{answer["rx"].as<double>(), answer["ry"].as<double>(), answer["rz"].as<double>(), answer["rw"].as<double>()};
+  ans_quat = tsfm::normalize(ans_quat);
+
+  if (pose.quat()[0] * answer["rx"].as<double>() < 0)
+  {
+    sign = -1.F;
+  }
+  EXPECT_NEAR(pose.quat()[0], sign * ans_quat[0], 1e-1);
+  EXPECT_NEAR(pose.quat()[1], sign * ans_quat[1], 1e-1);
+  EXPECT_NEAR(pose.quat()[2], sign * ans_quat[2], 1e-1);
+  EXPECT_NEAR(pose.quat()[3], sign * ans_quat[3], 1e-1);
   tsfm::Vec3 t{answer["tx"].as<double>(), answer["ty"].as<double>(), answer["tz"].as<double>()};
   t = t / tsfm::norm(t);
   EXPECT_NEAR(pose.trans()[0], t[0], 5e-1);

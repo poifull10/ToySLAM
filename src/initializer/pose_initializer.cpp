@@ -36,16 +36,16 @@ Pose PoseInitializer::operator()(const std::vector<std::shared_ptr<Image>>& imag
   cv::recoverPose(E, points1, points2, R, t, focalLength);
   Eigen::Matrix<double, 3, 3> eigenR;
   eigenR(0, 0) = R.at<double>(0, 0);
-  eigenR(1, 0) = R.at<double>(1, 0);
-  eigenR(2, 0) = R.at<double>(2, 0);
-  eigenR(0, 1) = R.at<double>(0, 1);
+  eigenR(1, 0) = R.at<double>(0, 1);
+  eigenR(2, 0) = R.at<double>(0, 2);
+  eigenR(0, 1) = R.at<double>(1, 0);
   eigenR(1, 1) = R.at<double>(1, 1);
-  eigenR(2, 1) = R.at<double>(2, 1);
-  eigenR(0, 2) = R.at<double>(0, 2);
-  eigenR(1, 2) = R.at<double>(1, 2);
+  eigenR(2, 1) = R.at<double>(1, 2);
+  eigenR(0, 2) = R.at<double>(2, 0);
+  eigenR(1, 2) = R.at<double>(2, 1);
   eigenR(2, 2) = R.at<double>(2, 2);
   Eigen::Quaterniond quat(eigenR);
 
-  return Pose({t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0)}, {quat.x(), quat.y(), quat.z(), quat.w()});
+  return Pose(normalize(Vec3{t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0)}), {quat.x(), quat.y(), quat.z(), quat.w()}).inv();
 }
 } // namespace tsfm

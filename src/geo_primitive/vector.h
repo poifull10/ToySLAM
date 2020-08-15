@@ -2,6 +2,7 @@
 #include <cmath>
 #include <functional>
 #include <initializer_list>
+#include <iostream>
 #include <vector>
 
 namespace tsfm
@@ -26,6 +27,16 @@ public:
   Vector& operator=(const Vector&) = default;
   T operator[](int i) const { return data_[i]; }
   T operator[](size_t i) const { return data_[i]; }
+
+  friend std::ostream& operator<<(std::ostream& os, const Vector& p)
+  {
+    for (size_t i = 0; i < N - 1; i++)
+    {
+      os << p.data_[i] << " ";
+    }
+    os << p.data_[N - 1];
+    return os;
+  }
 
 private:
   std::array<T, N> data_;
