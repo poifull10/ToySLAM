@@ -5,6 +5,7 @@
 
 namespace tsfm
 {
+
 Vec3 cvMat2Vec3(const cv::Mat& p);
 cv::Mat vec2ToCvMat(const Vector<double, 2>& p, bool outHomography = false);
 cv::Mat vec3ToCvMat(const Vector<double, 3>& p);

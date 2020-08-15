@@ -1,4 +1,5 @@
 #include <camera_model/pinhole_camera.h>
+#include <glog/logging.h>
 #include <image/image.h>
 #include <initializer/pose_initializer.h>
 #include <matcher/image_matcher.h>
@@ -16,6 +17,8 @@ int main(int argc, char** argv)
 {
   using namespace boost::program_options;
   namespace fs = boost::filesystem;
+  google::InitGoogleLogging(argv[0]);
+
   options_description description("Allowed options");
   description.add_options()                                                             //
     ("dir,d", value<fs::path>()->default_value("../data"), "dir path")                  //
@@ -54,7 +57,7 @@ int main(int argc, char** argv)
     }
   }
 
-  std::cout << imageFiles.size() << " images are found!" << std::endl;
+  LOG(INFO) << imageFiles.size() << " images to be load";
 
   const auto camYaml = vm["cam"].as<fs::path>();
 
@@ -73,12 +76,10 @@ int main(int argc, char** argv)
   {
     img->load();
   }
-  std::cout << "Draw matching..." << std::flush;
   tsfm::ImageMatcher im(images);
   im.extractFeatures();
   im.match();
   im.drawMatch("result.png");
-  std::cout << "done" << std::endl;
 
   for (auto& img : images)
   {
@@ -93,8 +94,8 @@ int main(int argc, char** argv)
 
     const auto pose = pi({images[i], images[i + 1]}, pinholeCamera);
 
-    std::cout << i << " th estimation : " << std::endl;
-    std::cout << pose << std::endl;
+    LOG(INFO) << i << " th estimation : ";
+    LOG(INFO) << pose;
 
     ofs << pose.quat()[0] << " " << pose.quat()[1] << " " << pose.quat()[2] << " " << pose.quat()[3] << " " //
         << pose.trans()[0] << " " << pose.trans()[1] << " " << pose.trans()[2] << std::endl;
