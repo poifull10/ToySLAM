@@ -30,14 +30,14 @@ TEST(PoseInitializer, estimatePose)
   float sign = 1.F;
   tsfm::Vec4 ans_quat{answer["rx"].as<double>(), answer["ry"].as<double>(), answer["rz"].as<double>(), answer["rw"].as<double>()};
   ans_quat = tsfm::normalize(ans_quat);
+  tsfm::Vec3 t{answer["tx"].as<double>(), answer["ty"].as<double>(), answer["tz"].as<double>()};
+  t = tsfm::normalize(t);
 
   EXPECT_NEAR(pose.quat()[0], sign * ans_quat[0], 1e-1);
   EXPECT_NEAR(pose.quat()[1], sign * ans_quat[1], 1e-1);
   EXPECT_NEAR(pose.quat()[2], sign * ans_quat[2], 1e-1);
   EXPECT_NEAR(pose.quat()[3], sign * ans_quat[3], 1e-1);
-  tsfm::Vec3 t{answer["tx"].as<double>(), answer["ty"].as<double>(), answer["tz"].as<double>()};
-  t = t / tsfm::norm(t);
-  EXPECT_NEAR(pose.trans()[0], t[0], 5e-1);
-  EXPECT_NEAR(pose.trans()[1], t[1], 5e-1);
-  EXPECT_NEAR(pose.trans()[2], t[2], 5e-1);
+  EXPECT_NEAR(pose.trans()[0], t[0], 3e-1);
+  EXPECT_NEAR(pose.trans()[1], t[1], 3e-1);
+  EXPECT_NEAR(pose.trans()[2], t[2], 3e-1);
 }
