@@ -10,8 +10,7 @@
 
 namespace tsfm
 {
-Pose PoseInitializer::operator()(const std::shared_ptr<Image>
-    & src, const std::shared_ptr<Image>& dst, const CameraModel& cm) const
+Pose PoseInitializer::operator()(const std::shared_ptr<Image>& src, const std::shared_ptr<Image>& dst, const CameraModel& cm) const
 {
   ImageMatcher im({src, dst});
   im.extractFeatures();

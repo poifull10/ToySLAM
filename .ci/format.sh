@@ -1,4 +1,3 @@
 #!/bin/bash
 set -eux
-run-clang-format.py -r src
-
+python3 /build/run-clang-format/run-clang-format.py -r src examples tests
