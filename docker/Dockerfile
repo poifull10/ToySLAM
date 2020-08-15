@@ -2,25 +2,21 @@ FROM ubuntu:focal
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   build-essential cmake ninja-build git ca-certificates \
-  libboost-all-dev libeigen3-dev \
+  libboost-all-dev libeigen3-dev libgoogle-glog-dev \
   && rm -rf /var/lib/apt/lists/*
 
 ARG WORKSPACE=/build
 
-WORKDIR ${WORKSPACE}
-
-RUN git clone https://github.com/opencv/opencv.git && git clone https://github.com/opencv/opencv_contrib.git
-
-WORKDIR ${WORKSPACE}/opencv
-
-RUN mkdir -p build
-
-WORKDIR ${WORKSPACE}/opencv/build
-
-RUN cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DOPENCV_ENABLE_NONFREE=ON -DOPENCV_EXTRA_MODULES_PATH=${WORKSPACE}/opencv_contrib/modules \
+RUN mkdir -p ${WORKSPACE} \
+  && cd ${WORKSPACE} \
+  && git clone https://github.com/opencv/opencv.git \
+  && git clone https://github.com/opencv/opencv_contrib.git \
+  && mkdir -p ${WORKSPACE}/opencv/build && cd ${WORKSPACE}/opencv/build \
+  && cmake .. -GNinja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DOPENCV_ENABLE_NONFREE=ON \
+  -DOPENCV_EXTRA_MODULES_PATH=${WORKSPACE}/opencv_contrib/modules \
   && ninja -j$(nproc) \
-  && ninja install
-
-WORKDIR ${WORKSPACE}
-
-RUN rm -rf *
+  && ninja install \
+  && cd / \
+  && rm -rf ${WORKSPACE}
