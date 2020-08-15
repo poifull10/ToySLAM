@@ -1,0 +1,15 @@
+name: debug_build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: debug
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Debug
+        uses: ./.github/actions/tsfm
+        with:
+          run-command: ".ci/debug_build.sh"
