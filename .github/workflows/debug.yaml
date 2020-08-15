@@ -1,15 +1,15 @@
-name: debug_release
+name: build
 
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: release
+    name: debug
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Release Build
+      - name: Debug
         uses: ./.github/actions/tsfm
         with:
-          run-command: ".ci/debug_release.sh"
+          run-command: ".ci/debug.sh"
