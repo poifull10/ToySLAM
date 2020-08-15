@@ -1,0 +1,14 @@
+name: "docker_run"
+description: "docker image for tsfm"
+author: "poifull10"
+
+inputs:
+  run-command: # id of input
+    description: "Command to run"
+    required: true
+runs:
+  using: "Docker"
+  image: "poifull10/tsfm"
+  args:
+    - ${{inputs.run-command}}
+

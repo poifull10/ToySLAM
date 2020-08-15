@@ -48,6 +48,6 @@ Pose PoseInitializer::operator()(const std::shared_ptr<Image>& src, const std::s
   eigenR(2, 2) = R.at<double>(2, 2);
   Eigen::Quaterniond quat(eigenR);
 
-  return Pose(normalize(Vec3{t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0)}), {quat.x(), quat.y(), quat.z(), quat.w()}).inv();
+  return Pose(normalize(Vec3{t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0)}), {quat.x(), quat.y(), quat.z(), quat.w()});
 }
 } // namespace tsfm
