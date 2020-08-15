@@ -6,12 +6,13 @@
 #include <opencv2/opencv.hpp>
 
 #include "../matcher/image_matcher.h"
+#include "../util/cv_primitive.h"
 
 namespace tsfm
 {
-Pose PoseInitializer::operator()(const std::vector<std::shared_ptr<Image>>& images, const CameraModel& cm) const
+Pose PoseInitializer::operator()(const std::shared_ptr<Image>& src, const std::shared_ptr<Image>& dst, const CameraModel& cm) const
 {
-  ImageMatcher im(images);
+  ImageMatcher im({src, dst});
   im.extractFeatures();
   const auto& matched = im.match();
 
@@ -30,8 +31,9 @@ Pose PoseInitializer::operator()(const std::vector<std::shared_ptr<Image>>& imag
   const cv::Mat K = cm.K();
   double apertureW, apertureH, fovx, fovy, focalLength, aspectRatio;
   cv::Point2d principalPoint;
-  cv::calibrationMatrixValues(K, images[0]->image().size(), apertureW, apertureH, fovx, fovy, focalLength, principalPoint, aspectRatio);
+  cv::calibrationMatrixValues(K, src->image().size(), apertureW, apertureH, fovx, fovy, focalLength, principalPoint, aspectRatio);
   const cv::Mat E = cv::findEssentialMat(points1, points2, K);
+
   cv::Mat R, t;
   cv::recoverPose(E, points1, points2, R, t, focalLength);
   Eigen::Matrix<double, 3, 3> eigenR;

@@ -25,6 +25,8 @@ public:
   }
   void unload() { image_.reset(); }
   size_t id() { return id_; }
+  size_t width() const { return image_.value().cols; }
+  size_t height() const { return image_.value().rows; }
 
 private:
   fs::path fpath_;

@@ -92,7 +92,7 @@ int main(int argc, char** argv)
     images[i]->load();
     images[i + 1]->load();
 
-    const auto pose = pi({images[i], images[i + 1]}, pinholeCamera);
+    const auto pose = pi(images[i], images[i + 1], pinholeCamera);
 
     LOG(INFO) << i << " th estimation : ";
     LOG(INFO) << pose;

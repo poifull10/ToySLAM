@@ -26,20 +26,11 @@ TEST(PoseInitializer, estimatePose)
   tsfm::PinholeCamera pc;
   pc.setIntrinsic(data);
 
-  tsfm::ImageMatcher im({img1, img2});
-  im.extractFeatures();
-  im.match();
-  im.drawMatch("match.png");
-
-  const auto pose = pi({img1, img2}, pc);
+  const auto pose = pi(img1, img2, pc);
   float sign = 1.F;
   tsfm::Vec4 ans_quat{answer["rx"].as<double>(), answer["ry"].as<double>(), answer["rz"].as<double>(), answer["rw"].as<double>()};
   ans_quat = tsfm::normalize(ans_quat);
 
-  if (pose.quat()[0] * answer["rx"].as<double>() < 0)
-  {
-    sign = -1.F;
-  }
   EXPECT_NEAR(pose.quat()[0], sign * ans_quat[0], 1e-1);
   EXPECT_NEAR(pose.quat()[1], sign * ans_quat[1], 1e-1);
   EXPECT_NEAR(pose.quat()[2], sign * ans_quat[2], 1e-1);

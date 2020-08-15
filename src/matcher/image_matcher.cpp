@@ -78,8 +78,8 @@ public:
 
     cv::Mat dst = images.front()->image();
     const auto firstId = images.front()->id();
-    const auto width = images.front()->image().cols;
-    const auto height = images.front()->image().rows;
+    const auto width = images.front()->width();
+    const auto height = images.front()->height();
 
     for (size_t i = 1; i < images.size(); i++)
     {
