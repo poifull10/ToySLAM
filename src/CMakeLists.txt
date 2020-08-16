@@ -5,9 +5,11 @@ add_library(
   camera_model/pinhole_camera.cpp
   initializer/pose_initializer.cpp
   matcher/image_matcher.cpp
-  util/load_data.cpp
+  ba/bundle_adjustment.cpp
   geo_primitive/pose.cpp
+  util/load_data.cpp
   util/cv_primitive.cpp
+  image/frame.cpp
 )
 
 add_library(TSfM::TSfM ALIAS ${PROJECT_NAME})
