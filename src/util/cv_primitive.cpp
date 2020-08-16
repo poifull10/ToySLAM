@@ -66,4 +66,13 @@ Vec4 CvRotToQuat(const cv::Mat& R)
   return Vec4{q.x(), q.y(), q.z(), q.w()};
 }
 
+cv::Mat poseToCvMat(const Pose& pose)
+{
+  cv::Mat T = cv::Mat::eye(4, 4, CV_64F);
+
+  quatToCvRot(pose.quat()).copyTo(T(cv::Range(0, 3), cv::Range(0, 3)));
+  vec3ToCvMat(pose.trans()).copyTo(T(cv::Range(0, 3), cv::Range(3, 4)));
+  return T;
+}
+
 } // namespace tsfm
