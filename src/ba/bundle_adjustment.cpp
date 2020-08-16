@@ -12,22 +12,11 @@ public:
   ~Impl() {}
 };
 
-BundleAdjustment::BundleAdjustment(double lambda) : frames_(), cm_(), lambda_(lambda), impl_(std::make_unique<Impl>()) {}
+BundleAdjustment::BundleAdjustment(std::vector<std::shared_ptr<Frame>> frames) : frames_(frames), cameraModels_(), impl_(std::make_unique<Impl>()) {}
 BundleAdjustment::~BundleAdjustment(){};
-
-void BundleAdjustment::addFrame(std::shared_ptr<Frame> frame)
-{
-  frames_.push_back(frame);
-}
-
-void BundleAdjustment::addCameraModel(std::shared_ptr<CameraModel> cm)
-{
-  cm_ = cm;
-}
 
 void BundleAdjustment::initialization()
 {
-  assert(cm_ != nullptr);
   if (frames_.empty())
   {
     return;
@@ -42,13 +31,12 @@ void BundleAdjustment::initialization()
   PoseInitializer pi;
   for (size_t i = 1; i < frames_.size(); i++)
   {
-    // TODO: validate pose
-    const auto estimatedPose = pi({frames_[i - 1]->image(), frames_[i]->image()}, *cm_);
+    const auto estimatedPose = pi(frames_.front(), frames_[i], *(cameraModels_[i - 1]));
     frames_[i]->setPose(estimatedPose);
   }
 }
 
-double BundleAdjustment::optimize(size_t N)
+double BundleAdjustment::optimize(size_t N, double lambda)
 {
   return 0.;
 }
