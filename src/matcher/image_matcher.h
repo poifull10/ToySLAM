@@ -13,7 +13,7 @@ namespace fs = boost::filesystem;
 struct MatchResult
 {
   std::vector<Vec2> keypoints;
-  std::vector<size_t> imageIds;
+  std::vector<ImageID> imageIds;
 };
 
 class ImageMatcher
