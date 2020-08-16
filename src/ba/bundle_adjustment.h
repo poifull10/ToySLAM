@@ -22,7 +22,7 @@ struct VisualObservation
 class BundleAdjustment
 {
 public:
-  BundleAdjustment(std::vector<std::shared_ptr<Frame>> frames);
+  BundleAdjustment(std::vector<std::shared_ptr<Frame>> frames, std::vector<std::shared_ptr<CameraModel>> cameraModels);
   ~BundleAdjustment();
   BundleAdjustment(BundleAdjustment&&) = default;
   BundleAdjustment& operator=(BundleAdjustment&&) = default;
@@ -38,12 +38,15 @@ public:
 
   std::vector<std::shared_ptr<Frame>> frames() const { return frames_; }
   std::vector<std::shared_ptr<CameraModel>> cameraModels() const { return cameraModels_; }
+  std::vector<std::shared_ptr<Point>> points() const { return points_; }
 
 private:
   class Impl;
   std::vector<VisualObservation> observations_;
   std::vector<std::shared_ptr<Frame>> frames_;
   std::vector<std::shared_ptr<CameraModel>> cameraModels_;
+  std::vector<std::shared_ptr<Point>> points_;
   std::unique_ptr<Impl> impl_;
+  PointMaker pointMaker_;
 };
 } // namespace tsfm

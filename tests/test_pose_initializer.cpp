@@ -14,8 +14,8 @@ TEST(PoseInitializer, estimatePose)
 {
   tsfm::PoseInitializer pi;
   tsfm::FrameMaker maker;
-  auto frame1 = maker.make("../tests/pose_initializer_dataset/000000.png");
-  auto frame2 = maker.make("../tests/pose_initializer_dataset/000002.png");
+  auto frame1 = maker.make("../tests/pose_initializer_dataset/000000.png", nullptr);
+  auto frame2 = maker.make("../tests/pose_initializer_dataset/000002.png", nullptr);
 
   tsfm::CalibrationLoader cl("../tests/pose_initializer_dataset/cam.yaml");
   const auto [_, data] = cl.load();

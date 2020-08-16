@@ -9,6 +9,7 @@ add_executable(
   test_image_matcher.cpp
   test_pose_initializer.cpp
   test_cv_primitive.cpp
+  test_bundle_adjustment.cpp
 )
 
 target_link_libraries(TSfMTest gtest TSfM::TSfM)

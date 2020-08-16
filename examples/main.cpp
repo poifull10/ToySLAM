@@ -69,9 +69,15 @@ int main(int argc, char** argv)
     pinholeCamera.setIntrinsic(calib);
   }
 
+  std::vector<std::shared_ptr<tsfm::CameraModel>> cameraModels;
+  for (size_t i = 0; i < imageFiles.size(); i++)
+  {
+    cameraModels.emplace_back(std::make_shared<tsfm::PinholeCamera>(pinholeCamera));
+  }
+
   tsfm::PoseInitializer pi;
   tsfm::FrameMaker maker;
-  auto frames = maker.make(imageFiles);
+  auto frames = maker.make(imageFiles, cameraModels);
 
   std::ofstream ofs("run.log");
   for (size_t i = 0; i < frames.size() - 1; i++)
