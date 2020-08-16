@@ -8,8 +8,7 @@ class PointID
 {
 public:
   PointID(size_t id) : id_(id) {}
-  PointID(const PointID&) = delete;
-  PointID& operator=(const PointID&) = delete;
+  ~PointID() = default;
 
   size_t toSizeT() const { return id_; }
   int toInt() const { return static_cast<int>(id_); }
@@ -21,15 +20,11 @@ private:
 class Point
 {
 public:
-  Point(Vec3 x) : X_(x) {}
+  Point(Vec3 x, size_t id) : X_(x), id_(id) {}
   ~Point() = default;
-  Point(const Point&) = delete;
-  Point(const Point&&) = default;
-  Point& operator=(const Point&) = delete;
-  Point& operator=(const Point&&) = default;
 
   Vec3& X() { return X_; }
-  PointID id() const { return id_; }
+  PointID id() { return id_; }
 
 private:
   Vec3 X_;
@@ -38,6 +33,13 @@ private:
 
 class PointMaker
 {
+public:
+  PointMaker() = default;
+  ~PointMaker() = default;
+  std::shared_ptr<Point> make() { return std::make_shared<Point>(Vec3(), id_++); }
+
+private:
+  size_t id_ = 0;
 };
 
 } // namespace tsfm
