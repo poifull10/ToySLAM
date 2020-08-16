@@ -1,17 +1,16 @@
 #include <gtest/gtest.h>
+#include <image/frame.h>
 #include <matcher/image_matcher.h>
 
 #include <iostream>
 
 TEST(ImageMatcher, match)
 {
-  tsfm::ImageMaker maker;
-  auto img1 = maker.make("../tests/pose_initializer_dataset/000000.png");
-  auto img2 = maker.make("../tests/pose_initializer_dataset/000001.png");
-  auto img3 = maker.make("../tests/pose_initializer_dataset/000002.png");
-  img1->load();
-  img2->load();
-  tsfm::ImageMatcher im({img1, img2});
+  tsfm::FrameMaker maker;
+  auto frame1 = maker.make("../tests/pose_initializer_dataset/000000.png");
+  auto frame2 = maker.make("../tests/pose_initializer_dataset/000001.png");
+  auto frame3 = maker.make("../tests/pose_initializer_dataset/000002.png");
+  tsfm::ImageMatcher im({frame1->image(), frame2->image()});
   im.extractFeatures();
   const auto matched = im.match();
 
@@ -24,8 +23,7 @@ TEST(ImageMatcher, match)
   }
   im.drawMatch("match2.png");
 
-  img3->load();
-  tsfm::ImageMatcher im2({img1, img2, img3});
+  tsfm::ImageMatcher im2({frame1->image(), frame2->image(), frame3->image()});
   im2.extractFeatures();
   im2.match();
   im2.drawMatch("match3.png");

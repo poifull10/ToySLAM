@@ -1,5 +1,6 @@
 #include <camera_model/pinhole_camera.h>
 #include <glog/logging.h>
+#include <image/frame.h>
 #include <image/image.h>
 #include <initializer/pose_initializer.h>
 #include <matcher/image_matcher.h>
@@ -69,37 +70,18 @@ int main(int argc, char** argv)
   }
 
   tsfm::PoseInitializer pi;
-  tsfm::ImageMaker maker;
-  auto images = maker.make(imageFiles);
-
-  for (auto& img : images)
-  {
-    img->load();
-  }
-  tsfm::ImageMatcher im(images);
-  im.extractFeatures();
-  im.match();
-  im.drawMatch("result.png");
-
-  for (auto& img : images)
-  {
-    img->unload();
-  }
+  tsfm::FrameMaker maker;
+  auto frames = maker.make(imageFiles);
 
   std::ofstream ofs("run.log");
-  for (size_t i = 0; i < images.size() - 1; i++)
+  for (size_t i = 0; i < frames.size() - 1; i++)
   {
-    images[i]->load();
-    images[i + 1]->load();
-
-    const auto pose = pi(images[i], images[i + 1], pinholeCamera);
+    const auto pose = pi(frames[i], frames[i + 1], pinholeCamera);
 
     LOG(INFO) << i << " th estimation : ";
     LOG(INFO) << pose;
 
     ofs << pose.quat()[0] << " " << pose.quat()[1] << " " << pose.quat()[2] << " " << pose.quat()[3] << " " //
         << pose.trans()[0] << " " << pose.trans()[1] << " " << pose.trans()[2] << std::endl;
-
-    images[i]->unload();
   }
 }
