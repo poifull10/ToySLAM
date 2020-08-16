@@ -5,14 +5,15 @@
 #include <opencv2/core/eigen.hpp>
 #include <opencv2/opencv.hpp>
 
+#include "../image/frame.h"
 #include "../matcher/image_matcher.h"
 #include "../util/cv_primitive.h"
 
 namespace tsfm
 {
-Pose PoseInitializer::operator()(const std::shared_ptr<Image>& src, const std::shared_ptr<Image>& dst, const CameraModel& cm) const
+Pose PoseInitializer::operator()(const std::shared_ptr<Frame>& src, const std::shared_ptr<Frame>& dst, const CameraModel& cm) const
 {
-  ImageMatcher im({src, dst});
+  ImageMatcher im({src->image(), dst->image()});
   im.extractFeatures();
   const auto& matched = im.match();
   im.drawMatch("match.png");
