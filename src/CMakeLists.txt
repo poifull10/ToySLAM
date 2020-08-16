@@ -6,9 +6,10 @@ add_library(
   initializer/pose_initializer.cpp
   matcher/image_matcher.cpp
   ba/bundle_adjustment.cpp
-  util/load_data.cpp
   geo_primitive/pose.cpp
+  util/load_data.cpp
   util/cv_primitive.cpp
+  image/frame.cpp
 )
 
 add_library(TSfM::TSfM ALIAS ${PROJECT_NAME})
