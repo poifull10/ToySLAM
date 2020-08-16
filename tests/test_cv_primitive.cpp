@@ -18,7 +18,7 @@ TEST(CVPrimitive, poseToCvMat)
   ans.at<double>(2, 3) = -114;
 
   tsfm::Pose pose({-3.4, 37.9, -114}, {0.36380343755449945, -0.36380343755449945, 0.1212678125181665, -0.8488746876271654});
-  cv::Mat actual = tsfm::poseToCvMat(pose);
+  cv::Mat actual = tsfm::poseToCvMat44(pose);
 
   for (size_t i = 0; i < 4; i++)
   {

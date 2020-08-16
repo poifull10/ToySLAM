@@ -1,8 +1,10 @@
 #pragma once
 
+#include <boost/filesystem/path.hpp>
+#include <memory>
 #include <opencv2/opencv.hpp>
-#include <string>
 
+#include "../camera_model/camera_model.h"
 #include "../geo_primitive/pose.h"
 #include "image.h"
 
@@ -20,11 +22,15 @@ public:
   }
   Pose pose() const { return pose_; }
   void setPose(const Pose& pose) { pose_ = pose; }
+  void setCameraModel(std::shared_ptr<CameraModel> cm) { cameraModel_ = cm; }
   void unload() { image_.unload(); }
+  cv::Mat P();
+  cv::Mat K();
 
 private:
   Image image_;
   Pose pose_;
+  std::shared_ptr<CameraModel> cameraModel_;
 };
 
 class FrameMaker
