@@ -15,7 +15,7 @@ namespace tsfm
 
 struct VisualObservation
 {
-  PointID id_;
+  PointID id;
   std::vector<std::tuple<ImageID, Vec2>> points;
 };
 
@@ -46,6 +46,7 @@ private:
   std::vector<std::shared_ptr<Frame>> frames_;
   std::vector<std::shared_ptr<CameraModel>> cameraModels_;
   std::vector<std::shared_ptr<Point>> points_;
+  std::vector<VisualObservation> visualObservations_;
   std::unique_ptr<Impl> impl_;
   PointMaker pointMaker_;
 };

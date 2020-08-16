@@ -71,6 +71,13 @@ void BundleAdjustment::initialization()
     const auto d = point4d.at<double>(3, 0);
     point->X() = {a / d, b / d, c / d};
     points_.emplace_back(point);
+    std::vector<std::tuple<ImageID, Vec2>> imgpoints;
+    for (size_t i = 0; i < match.keypoints.size(); i++)
+    {
+      imgpoints.push_back({match.imageIds[i], match.keypoints[i]});
+    }
+    VisualObservation vo{vo.id = point->id(), imgpoints};
+    visualObservations_.emplace_back(vo);
   }
 }
 
