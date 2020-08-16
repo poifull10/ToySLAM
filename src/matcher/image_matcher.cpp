@@ -77,7 +77,7 @@ public:
     std::uniform_int_distribution<> rand(0, 255);
 
     cv::Mat dst = images.front()->image();
-    const auto firstId = images.front()->id();
+    const auto firstId = images.front()->id().toInt();
     const auto width = images.front()->width();
     const auto height = images.front()->height();
 
@@ -94,8 +94,8 @@ public:
       assert(match.imageIds.size() == match.keypoints.size());
       for (size_t i = 0; i < match.imageIds.size() - 1; i++)
       {
-        const auto fromIdx = match.imageIds[i];
-        const auto toIdx = match.imageIds[i + 1];
+        const auto fromIdx = match.imageIds[i].toInt();
+        const auto toIdx = match.imageIds[i + 1].toInt();
         const auto fromV = match.keypoints[i];
         const auto toV = match.keypoints[i + 1];
         const auto fromRow = fromIdx - firstId;
@@ -110,7 +110,7 @@ public:
   }
 
   std::vector<std::vector<cv::KeyPoint>> keypoints_;
-  std::vector<size_t> imageIds_;
+  std::vector<ImageID> imageIds_;
   std::vector<cv::Mat> descriptors_;
   std::vector<MatchResult> matches_;
 }; // namespace tsfm
