@@ -9,10 +9,8 @@
 #include "../matcher/image_matcher.h"
 #include "../util/cv_primitive.h"
 
-namespace tsfm
-{
-Pose PoseInitializer::operator()(const std::shared_ptr<Frame>& src, const std::shared_ptr<Frame>& dst, const CameraModel& cm) const
-{
+namespace tsfm {
+Pose PoseInitializer::operator()(const std::shared_ptr<Frame>& src, const std::shared_ptr<Frame>& dst, const CameraModel& cm) const {
   ImageMatcher im({src->image(), dst->image()});
   im.extractFeatures();
   const auto& matched = im.match();
@@ -22,8 +20,7 @@ Pose PoseInitializer::operator()(const std::shared_ptr<Frame>& src, const std::s
 
   std::vector<cv::Point2f> points1, points2;
 
-  for (const auto [keypoints, _] : matched)
-  {
+  for (const auto [keypoints, _] : matched) {
     const auto v1 = keypoints[0];
     const auto v2 = keypoints[1];
     points1.emplace_back(v1[0], v1[1]);
@@ -38,4 +35,4 @@ Pose PoseInitializer::operator()(const std::shared_ptr<Frame>& src, const std::s
 
   return Pose(normalize(Vec3{t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0)}), normalize(quat));
 }
-} // namespace tsfm
+}  // namespace tsfm

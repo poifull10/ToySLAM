@@ -4,8 +4,7 @@
 
 #include <iostream>
 
-TEST(ImageMatcher, match)
-{
+TEST(ImageMatcher, match) {
   tsfm::FrameMaker maker;
   auto frame1 = maker.make("../tests/pose_initializer_dataset/000000.png");
   auto frame2 = maker.make("../tests/pose_initializer_dataset/000001.png");
@@ -14,12 +13,11 @@ TEST(ImageMatcher, match)
   im.extractFeatures();
   const auto matched = im.match();
 
-  for (const auto match : matched)
-  {
-    const auto v1 = match.keypoints[0];
-    const auto v2 = match.keypoints[1];
-    EXPECT_GT(v1[0], v2[0]);
-    EXPECT_NEAR(v1[1], v2[1], 3.);
+  for (const auto& match : matched) {
+    const auto& v1 = match.keypoints[0];
+    const auto& v2 = match.keypoints[1];
+    ASSERT_GT(v1[0], v2[0]);
+    ASSERT_NEAR(v1[1], v2[1], 3.F);
   }
   im.drawMatch("match2.png");
 
