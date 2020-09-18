@@ -1,4 +1,3 @@
-
 add_library(
   ${PROJECT_NAME}
   toy_sfm.cpp

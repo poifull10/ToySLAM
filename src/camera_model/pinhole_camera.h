@@ -1,11 +1,9 @@
 #pragma once
 #include "camera_model.h"
 
-namespace tsfm
-{
-class PinholeCamera : public CameraModel
-{
-public:
+namespace tsfm {
+class PinholeCamera : public CameraModel {
+ public:
   PinholeCamera() = default;
   PinholeCamera(const PinholeCamera&) = default;
   PinholeCamera(PinholeCamera&&) = default;
@@ -16,15 +14,14 @@ public:
   Vec2 project(const Vec3& p) const override;
   Vec3 unproject(const Vec2&) const override;
   cv::Mat K() const override;
-  struct IntrincsicParameter
-  {
+  struct IntrincsicParameter {
     double fx;
     double fy;
     double cx;
     double cy;
   };
 
-private:
+ private:
   IntrincsicParameter intrinsic_;
 };
-} // namespace tsfm
+}  // namespace tsfm

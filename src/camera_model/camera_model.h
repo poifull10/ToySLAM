@@ -6,28 +6,23 @@
 
 #include "../geo_primitive/vector.h"
 
-namespace tsfm
-{
+namespace tsfm {
 
-enum class CameraType
-{
+enum class CameraType {
   pinhole
 };
 
-enum class DistortionType
-{
+enum class DistortionType {
   none
 };
 
-struct CameraDistortion
-{
+struct CameraDistortion {
   CameraType camera;
   DistortionType distortion;
 };
 
-class CameraModel
-{
-public:
+class CameraModel {
+ public:
   CameraModel() = default;
   CameraModel(const CameraModel&) = default;
   CameraModel(CameraModel&&) = default;
@@ -39,4 +34,4 @@ public:
   virtual Vec3 unproject(const Vec2&) const = 0;
   virtual cv::Mat K() const = 0;
 };
-} // namespace tsfm
+}  // namespace tsfm

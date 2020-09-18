@@ -6,19 +6,16 @@
 #include "../geo_primitive/vector.h"
 #include "../image/image.h"
 
-namespace tsfm
-{
+namespace tsfm {
 namespace fs = boost::filesystem;
 
-struct MatchResult
-{
+struct MatchResult {
   std::vector<Vec2> keypoints;
   std::vector<ImageID> imageIds;
 };
 
-class ImageMatcher
-{
-public:
+class ImageMatcher {
+ public:
   ImageMatcher(const std::vector<std::shared_ptr<Image>>& images);
   ~ImageMatcher();
 
@@ -26,9 +23,9 @@ public:
   std::vector<MatchResult> match();
   void drawMatch(const fs::path& path);
 
-private:
+ private:
   class Impl;
   std::unique_ptr<Impl> impl_;
   std::vector<std::shared_ptr<Image>> images_;
 };
-} // namespace tsfm
+}  // namespace tsfm

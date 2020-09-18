@@ -6,17 +6,15 @@
 
 #include "../camera_model/camera_model.h"
 
-namespace tsfm
-{
+namespace tsfm {
 namespace fs = boost::filesystem;
 
-class CalibrationLoader
-{
-public:
+class CalibrationLoader {
+ public:
   CalibrationLoader(const fs::path& path) : path_(path) {}
   std::tuple<CameraDistortion, std::unordered_map<std::string, double>> load();
 
-private:
+ private:
   fs::path path_;
 };
-} // namespace tsfm
+}  // namespace tsfm
