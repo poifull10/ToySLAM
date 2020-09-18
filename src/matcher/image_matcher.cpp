@@ -5,21 +5,17 @@
 #include <opencv2/xfeatures2d.hpp>
 #include <random>
 
-namespace tsfm
-{
+namespace tsfm {
 
-class ImageMatcher::Impl
-{
-public:
+class ImageMatcher::Impl {
+ public:
   Impl() = default;
   ~Impl() = default;
 
-  void extractFeatures(const std::vector<std::shared_ptr<Image>>& images)
-  {
+  void extractFeatures(const std::vector<std::shared_ptr<Image>>& images) {
     const auto siftDetector = cv::xfeatures2d::SURF::create(2000);
 
-    for (const auto& image : images)
-    {
+    for (const auto& image : images) {
       std::vector<cv::KeyPoint> keypoint;
       cv::Mat desc;
       siftDetector->detectAndCompute(image->image(), cv::noArray(), keypoint, desc);
@@ -29,9 +25,7 @@ public:
     }
   }
 
-  std::vector<MatchResult> match()
-  {
-
+  std::vector<MatchResult> match() {
     const auto matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
     std::vector<std::vector<cv::DMatch>> match;
     const int numOfMatch = 2;
@@ -39,10 +33,8 @@ public:
 
     matcher->knnMatch(descriptors_[0], descriptors_[1], match, numOfMatch);
 
-    for (size_t i = 0; i < match.size(); i++)
-    {
-      if (match[i][0].distance >= ratio_thresh * match[i][1].distance)
-      {
+    for (size_t i = 0; i < match.size(); i++) {
+      if (match[i][0].distance >= ratio_thresh * match[i][1].distance) {
         continue;
       }
       MatchResult mr;
@@ -52,12 +44,10 @@ public:
       mr.imageIds.emplace_back(imageIds_[1]);
 
       cv::Mat desc = descriptors_[1].row(match[i][0].trainIdx);
-      for (size_t j = 1; j < descriptors_.size() - 1; j++)
-      {
+      for (size_t j = 1; j < descriptors_.size() - 1; j++) {
         std::vector<std::vector<cv::DMatch>> nestMatch;
         matcher->knnMatch(desc, descriptors_[j + 1], nestMatch, numOfMatch);
-        if (nestMatch[0][0].distance >= ratio_thresh * nestMatch[0][1].distance)
-        {
+        if (nestMatch[0][0].distance >= ratio_thresh * nestMatch[0][1].distance) {
           continue;
         }
         mr.keypoints.emplace_back(Vec2{keypoints_[j + 1][nestMatch[0][0].trainIdx].pt.x, keypoints_[j + 1][nestMatch[0][0].trainIdx].pt.y});
@@ -70,8 +60,7 @@ public:
     return matches_;
   }
 
-  void drawMatch(const std::vector<std::shared_ptr<Image>>& images, const fs::path& path)
-  {
+  void drawMatch(const std::vector<std::shared_ptr<Image>>& images, const fs::path& path) {
     std::random_device seed_gen;
     std::default_random_engine engine(seed_gen());
     std::uniform_int_distribution<> rand(0, 255);
@@ -81,19 +70,16 @@ public:
     const auto width = images.front()->width();
     const auto height = images.front()->height();
 
-    for (size_t i = 1; i < images.size(); i++)
-    {
+    for (size_t i = 1; i < images.size(); i++) {
       cv::vconcat(dst, images[i]->image(), dst);
     }
 
-    for (const auto& match : matches_)
-    {
+    for (const auto& match : matches_) {
       const auto r = rand(engine);
       const auto g = rand(engine);
       const auto b = rand(engine);
       assert(match.imageIds.size() == match.keypoints.size());
-      for (size_t i = 0; i < match.imageIds.size() - 1; i++)
-      {
+      for (size_t i = 0; i < match.imageIds.size() - 1; i++) {
         const auto fromIdx = match.imageIds[i].toInt();
         const auto toIdx = match.imageIds[i + 1].toInt();
         const auto fromV = match.keypoints[i];
@@ -113,24 +99,21 @@ public:
   std::vector<ImageID> imageIds_;
   std::vector<cv::Mat> descriptors_;
   std::vector<MatchResult> matches_;
-}; // namespace tsfm
+};  // namespace tsfm
 
 ImageMatcher::ImageMatcher(const std::vector<std::shared_ptr<Image>>& images) : images_(images), impl_(std::make_unique<Impl>()) {}
 
 ImageMatcher::~ImageMatcher() {}
 
-void ImageMatcher::extractFeatures()
-{
+void ImageMatcher::extractFeatures() {
   impl_->extractFeatures(images_);
 }
-std::vector<MatchResult> ImageMatcher::match()
-{
+std::vector<MatchResult> ImageMatcher::match() {
   return impl_->match();
 }
 
-void ImageMatcher::drawMatch(const fs::path& path)
-{
+void ImageMatcher::drawMatch(const fs::path& path) {
   impl_->drawMatch(images_, path);
 }
 
-} // namespace tsfm
+}  // namespace tsfm
