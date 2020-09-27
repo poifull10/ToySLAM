@@ -4,13 +4,11 @@
 
 namespace tsfm {
 namespace {
-
 const std::unordered_map<std::string, CameraType> str2CameraType = {{"pinhole", CameraType::pinhole}};
 const std::unordered_map<std::string, DistortionType> str2DistortionType = {{"none", DistortionType::none}};
-
 }  // namespace
 
-std::tuple<CameraDistortion, std::unordered_map<std::string, double>> CalibrationLoader::load() {
+std::tuple<CameraDistortion, std::unordered_map<std::string, double>> CalibrationLoader::load() const {
   YAML::Node config = YAML::LoadFile(path_.string());
   const auto cameraType = str2CameraType.at(config["camera"].as<std::string>());
   const auto distortionType = str2DistortionType.at(config["distortion"].as<std::string>());

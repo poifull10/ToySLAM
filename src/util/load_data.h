@@ -12,7 +12,7 @@ namespace fs = boost::filesystem;
 class CalibrationLoader {
  public:
   CalibrationLoader(const fs::path& path) : path_(path) {}
-  std::tuple<CameraDistortion, std::unordered_map<std::string, double>> load();
+  std::tuple<CameraDistortion, std::unordered_map<std::string, double>> load() const;
 
  private:
   fs::path path_;
