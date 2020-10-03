@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(ToySfM CXX)
+project(ToySfM LANGUAGES CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${ToySfM_SOURCE_DIR}/cmake")
 
