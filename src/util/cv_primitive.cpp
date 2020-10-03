@@ -50,7 +50,6 @@ Vec4 CvRotToQuat(const cv::Mat& R) {
       mat(y, x) = R.at<double>(y, x);
     }
   }
-
   Eigen::Quaterniond q(mat);
   return Vec4{q.x(), q.y(), q.z(), q.w()};
 }
