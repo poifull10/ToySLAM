@@ -1,6 +1,6 @@
 #include "load_data.h"
 
-#include <yaml-cpp/yaml.h>
+#include <yaml-cpp/yaml.h>  // NOLINT
 
 namespace tsfm {
 namespace {

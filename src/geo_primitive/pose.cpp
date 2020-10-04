@@ -3,7 +3,7 @@
 #include "../util/cv_primitive.h"
 
 namespace tsfm {
-Pose Pose::inv() const {
+auto Pose::inv() const -> Pose {
   const auto R = quatToCvRot(quat());
   const auto t = vec3ToCvMat(trans());
   cv::Mat R_inv = R.t();
@@ -11,7 +11,7 @@ Pose Pose::inv() const {
   return Pose(cvMat2Vec3(t_inv), CvRotToQuat(R_inv));
 }
 
-Pose operator*(const Pose& p2, const Pose& p1) {
+auto operator*(const Pose& p2, const Pose& p1) -> Pose {
   const auto R2 = quatToCvRot(p2.quat());
   const auto t2 = vec3ToCvMat(p2.trans());
   const auto R1 = quatToCvRot(p1.quat());
