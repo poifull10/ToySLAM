@@ -1,5 +1,5 @@
 #include <geo_primitive/vector.h>
-#include <gtest/gtest.h>
+#include <gtest/gtest.h>  // NOLINT
 
 TEST(Vector, constructor) {
   tsfm::Vec2 v2;

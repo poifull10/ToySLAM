@@ -1,9 +1,9 @@
 #include <util/load_data.h>
 
-#include "gtest/gtest.h"
+#include "gtest/gtest.h"  // NOLINT
 
 TEST(CalibrationLoader, load) {
-  tsfm::CalibrationLoader loader("../tests/pose_initializer_dataset/cam.yaml");
+  tsfm::CalibrationLoader loader("tests/pose_initializer_dataset/cam.yaml");
   const auto& [type, data] = loader.load();
   ASSERT_TRUE(type.camera == tsfm::CameraType::pinhole);
   ASSERT_TRUE(type.distortion == tsfm::DistortionType::none);

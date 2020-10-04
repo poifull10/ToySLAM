@@ -1,7 +1,7 @@
 #include "cv_primitive.h"
 
-#include <Eigen/Dense>
-#include <Eigen/Geometry>
+#include <Eigen/Dense>     // NOLINT
+#include <Eigen/Geometry>  // NOLINT
 
 namespace tsfm {
 Vec3 cvMat2Vec3(const cv::Mat& p) {

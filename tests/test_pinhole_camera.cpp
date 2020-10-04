@@ -1,6 +1,6 @@
 #include <camera_model/pinhole_camera.h>
 
-#include "gtest/gtest.h"
+#include "gtest/gtest.h"  // NOLINT
 
 TEST(PinholeCamera, setIntrinsic) {
   tsfm::PinholeCamera pc;

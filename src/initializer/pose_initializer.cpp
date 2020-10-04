@@ -1,9 +1,9 @@
 #include "pose_initializer.h"
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-#include <opencv2/core/eigen.hpp>
-#include <opencv2/opencv.hpp>
+#include <Eigen/Core>              // NOLINT
+#include <Eigen/Geometry>          // NOLINT
+#include <opencv2/core/eigen.hpp>  // NOLINT
+#include <opencv2/opencv.hpp>      // NOLINT
 
 #include "../image/frame.h"
 #include "../matcher/image_matcher.h"
@@ -14,7 +14,6 @@ Pose PoseInitializer::operator()(const std::shared_ptr<Frame>& src, const std::s
   ImageMatcher im({src->image(), dst->image()});
   im.extractFeatures();
   const auto& matched = im.match();
-  im.drawMatch("match.png");
 
   assert(matched.size() >= 5);
 
