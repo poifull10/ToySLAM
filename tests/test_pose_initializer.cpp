@@ -1,24 +1,24 @@
 #include <camera_model/pinhole_camera.h>
 #include <glog/logging.h>
-#include <gtest/gtest.h>
+#include <gtest/gtest.h>  // NOLINT
 #include <image/frame.h>
 #include <image/image.h>
 #include <initializer/pose_initializer.h>
 #include <matcher/image_matcher.h>
 #include <util/load_data.h>
-#include <yaml-cpp/yaml.h>
+#include <yaml-cpp/yaml.h>  // NOLINT
 
 #include <iostream>
 
 TEST(PoseInitializer, estimatePose) {
   tsfm::PoseInitializer pi;
   tsfm::FrameMaker maker;
-  auto frame1 = maker.make("../tests/pose_initializer_dataset/000000.png");
-  auto frame2 = maker.make("../tests/pose_initializer_dataset/000002.png");
+  auto frame1 = maker.make("tests/pose_initializer_dataset/000000.png");
+  auto frame2 = maker.make("tests/pose_initializer_dataset/000002.png");
 
-  tsfm::CalibrationLoader cl("../tests/pose_initializer_dataset/cam.yaml");
+  tsfm::CalibrationLoader cl("tests/pose_initializer_dataset/cam.yaml");
   const auto& [_, data] = cl.load();
-  const auto& answer = YAML::LoadFile("../tests/pose_initializer_dataset/pose02.yaml");
+  const auto& answer = YAML::LoadFile("tests/pose_initializer_dataset/pose02.yaml");
 
   tsfm::PinholeCamera pc;
   pc.setIntrinsic(data);

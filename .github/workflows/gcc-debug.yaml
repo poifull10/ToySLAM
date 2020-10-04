@@ -1,0 +1,13 @@
+name: build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: gcc-debug
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: gcc-debug
+        uses: ./.github/actions/tsfm
+        with:
+          run-command: ".ci/build_gcc_debug.sh"

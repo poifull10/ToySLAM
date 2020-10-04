@@ -1,15 +1,13 @@
 name: build
-
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: debug
+    name: clang-debug
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Debug
+      - name: clang-debug
         uses: ./.github/actions/tsfm
         with:
-          run-command: ".ci/debug.sh"
+          run-command: ".ci/build_clang_debug.sh"

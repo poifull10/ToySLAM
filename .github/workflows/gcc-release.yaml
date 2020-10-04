@@ -1,15 +1,13 @@
 name: build
-
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: release
+    name: gcc-release
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Release
+      - name: gcc-release
         uses: ./.github/actions/tsfm
         with:
-          run-command: ".ci/release.sh"
+          run-command: ".ci/build_gcc_release.sh"

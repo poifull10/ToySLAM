@@ -1,15 +1,13 @@
-name: format
-
+name: build
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: format
+    name: clang-release
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: clang-format
+      - name: clang-release
         uses: ./.github/actions/tsfm
         with:
-          run-command: ".ci/format.sh"
+          run-command: ".ci/build_clang_release.sh"
