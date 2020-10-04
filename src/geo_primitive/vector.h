@@ -20,11 +20,11 @@ class Vector {
   ~Vector() = default;
   Vector(Vector&&) = default;
   Vector(const Vector&) = default;
-  Vector& operator=(const Vector&) = default;
-  T operator[](int i) const { return data_[i]; }
-  T operator[](size_t i) const { return data_[i]; }
+  auto operator=(const Vector&) -> Vector& = default;
+  auto operator[](int i) const -> T { return data_[i]; }
+  auto operator[](size_t i) const -> T { return data_[i]; }
 
-  friend std::ostream& operator<<(std::ostream& os, const Vector& p) {
+  friend auto operator<<(std::ostream& os, const Vector& p) -> std::ostream& {
     for (size_t i = 0; i < N - 1; i++) {
       os << p.data_[i] << " ";
     }
@@ -37,7 +37,7 @@ class Vector {
 };
 
 template <typename T, int N, typename U>
-Vector<T, N> apply(const Vector<T, N>& vec, U func) {
+auto apply(const Vector<T, N>& vec, U func) -> Vector<T, N> {
   std::array<T, N> data;
   for (int i = 0; i < N; i++) {
     data[i] = func(vec[i]);
@@ -46,7 +46,7 @@ Vector<T, N> apply(const Vector<T, N>& vec, U func) {
 };
 
 template <typename T, int N>
-T sum(const Vector<T, N>& vec) {
+auto sum(const Vector<T, N>& vec) -> T {
   T ret = 0;
   for (int i = 0; i < N; i++) {
     ret += vec[i];
@@ -55,14 +55,14 @@ T sum(const Vector<T, N>& vec) {
 }
 
 template <typename T, int N>
-double norm(const Vector<T, N>& v) {
+auto norm(const Vector<T, N>& v) -> double {
   const auto v_squared = apply(v, [](double e) { return e * e; });
   const auto v_sum = sum(v_squared);
   return std::sqrt(v_sum);
 };
 
 template <typename T, int N>
-Vector<T, N> operator*(const Vector<T, N>& v, T val) {
+auto operator*(const Vector<T, N>& v, T val) -> Vector<T, N> {
   std::array<T, N> data;
   for (int i = 0; i < N; i++) {
     data[i] = v[i] * val;
@@ -71,7 +71,7 @@ Vector<T, N> operator*(const Vector<T, N>& v, T val) {
 }
 
 template <typename T, int N>
-Vector<T, N> operator/(const Vector<T, N>& v, T val) {
+auto operator/(const Vector<T, N>& v, T val) -> Vector<T, N> {
   std::array<T, N> data;
   for (int i = 0; i < N; i++) {
     data[i] = v[i] / val;
@@ -80,7 +80,7 @@ Vector<T, N> operator/(const Vector<T, N>& v, T val) {
 }
 
 template <typename T, int N>
-Vector<T, N> normalize(const Vector<T, N>& v) {
+auto normalize(const Vector<T, N>& v) -> Vector<T, N> {
   return v / tsfm::norm(v);
 }
 

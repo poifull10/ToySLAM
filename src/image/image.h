@@ -1,6 +1,6 @@
 #pragma once
-#include <boost/filesystem/path.hpp>
-#include <opencv2/opencv.hpp>
+#include <boost/filesystem/path.hpp>  // NOLINT
+#include <opencv2/opencv.hpp>         // NOLINT
 #include <optional>
 #include <string>
 #include <vector>

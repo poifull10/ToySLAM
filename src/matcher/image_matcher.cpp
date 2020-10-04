@@ -1,8 +1,8 @@
 #include "image_matcher.h"
 
-#include <opencv2/features2d.hpp>
-#include <opencv2/opencv.hpp>
-#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/features2d.hpp>   // NOLINT
+#include <opencv2/opencv.hpp>       // NOLINT
+#include <opencv2/xfeatures2d.hpp>  // NOLINT
 #include <random>
 
 namespace tsfm {
