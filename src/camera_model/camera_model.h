@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "../geo_primitive/vector.h"
+#include "../math/vector.h"
 
 namespace tsfm {
 
@@ -29,9 +29,9 @@ class CameraModel {
   ~CameraModel() = default;
   CameraModel& operator=(CameraModel&) = default;
 
-  virtual void setIntrinsic(const std::unordered_map<std::string, double>&) = 0;
+  virtual void setIntrinsic(const std::unordered_map<std::string, double>& intrinsic) = 0;
   virtual Vec2 project(const Vec3& p) const = 0;
-  virtual Vec3 unproject(const Vec2&) const = 0;
+  virtual Vec3 unproject(const Vec2& ip) const = 0;
   virtual cv::Mat K() const = 0;
 };
 }  // namespace tsfm

@@ -3,8 +3,8 @@
 #include <boost/filesystem/path.hpp>
 #include <memory>
 
-#include "../geo_primitive/vector.h"
 #include "../image/image.h"
+#include "../math/vector.h"
 
 namespace tsfm {
 namespace fs = boost::filesystem;

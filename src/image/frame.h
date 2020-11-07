@@ -2,7 +2,7 @@
 #include <opencv2/opencv.hpp>  // NOLINT
 #include <string>
 
-#include "../geo_primitive/pose.h"
+#include "../math/pose.h"
 #include "image.h"
 
 namespace tsfm {

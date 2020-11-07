@@ -3,9 +3,9 @@
 #include <memory>
 
 #include "../camera_model/camera_model.h"
-#include "../geo_primitive/pose.h"
 #include "../image/frame.h"
 #include "../image/image.h"
+#include "../math/pose.h"
 
 namespace tsfm {
 class PoseInitializer {
