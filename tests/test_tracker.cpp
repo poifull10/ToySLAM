@@ -3,8 +3,8 @@
 #include <gtest/gtest.h>  // NOLINT
 #include <image/frame.h>
 #include <image/image.h>
-#include <initializer/pose_initializer.h>
 #include <matcher/image_matcher.h>
+#include <tracker/tracker.h>
 #include <util/load_data.h>
 #include <yaml-cpp/yaml.h>  // NOLINT
 
