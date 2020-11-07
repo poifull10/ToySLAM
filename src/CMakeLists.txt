@@ -1,7 +1,7 @@
 add_library(
   ${PROJECT_NAME}
   camera_model/pinhole_camera.cpp
-  initializer/pose_initializer.cpp
+  tracker/tracker.cpp
   matcher/image_matcher.cpp
   util/load_data.cpp
   math/pose.cpp
