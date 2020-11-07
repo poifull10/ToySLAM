@@ -1,5 +1,5 @@
-#include <geo_primitive/pose.h>
 #include <gtest/gtest.h>  // NOLINT
+#include <math/pose.h>
 
 TEST(Pose, constructor) {
   const tsfm::Pose p;

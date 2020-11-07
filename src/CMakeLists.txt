@@ -1,11 +1,10 @@
 add_library(
   ${PROJECT_NAME}
-  toy_sfm.cpp
   camera_model/pinhole_camera.cpp
   initializer/pose_initializer.cpp
   matcher/image_matcher.cpp
   util/load_data.cpp
-  geo_primitive/pose.cpp
+  math/pose.cpp
   util/cv_primitive.cpp
 )
 

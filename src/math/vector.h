@@ -1,19 +1,25 @@
 #pragma once
+#include <algorithm>
 #include <cmath>
 #include <functional>
 #include <initializer_list>
 #include <iostream>
+#include <numeric>
 #include <vector>
 
 namespace tsfm {
+
 template <typename T, int N>
 class Vector {
+  using Iterator = typename std::array<T, N>::iterator;
+  using ConstIterator = typename std::array<T, N>::const_iterator;
+
  public:
   Vector() : data_() {}
-  Vector(const std::array<T, N> data) : data_(data) {}
+  Vector(const std::array<T, N>& data) : data_(data) {}
   Vector(std::initializer_list<T> init) {
     int cnt = 0;
-    for (auto e : init) {
+    for (const auto& e : init) {
       data_[cnt++] = e;
     }
   }
@@ -21,8 +27,8 @@ class Vector {
   Vector(Vector&&) = default;
   Vector(const Vector&) = default;
   auto operator=(const Vector&) -> Vector& = default;
-  auto operator[](int i) const -> T { return data_[i]; }
-  auto operator[](size_t i) const -> T { return data_[i]; }
+  [[nodiscard]] auto operator[](int i) const -> T { return data_[i]; }
+  [[nodiscard]] auto operator[](size_t i) const -> T { return data_[i]; }
 
   friend auto operator<<(std::ostream& os, const Vector& p) -> std::ostream& {
     for (size_t i = 0; i < N - 1; i++) {
@@ -32,50 +38,31 @@ class Vector {
     return os;
   }
 
+  Iterator begin() { return data_.begin(); }
+  Iterator end() { return data_.end(); }
+  ConstIterator cbegin() const { return data_.cbegin(); }
+  ConstIterator cend() const { return data_.cend(); }
+
  private:
   std::array<T, N> data_;
 };
 
-template <typename T, int N, typename U>
-auto apply(const Vector<T, N>& vec, U func) -> Vector<T, N> {
-  std::array<T, N> data;
-  for (int i = 0; i < N; i++) {
-    data[i] = func(vec[i]);
-  }
-  return Vector<T, N>(data);
-};
-
-template <typename T, int N>
-auto sum(const Vector<T, N>& vec) -> T {
-  T ret = 0;
-  for (int i = 0; i < N; i++) {
-    ret += vec[i];
-  }
-  return ret;
-}
-
 template <typename T, int N>
 auto norm(const Vector<T, N>& v) -> double {
-  const auto v_squared = apply(v, [](double e) { return e * e; });
-  const auto v_sum = sum(v_squared);
-  return std::sqrt(v_sum);
+  return std::sqrt(std::accumulate(v.cbegin(), v.cend(), T(), [](const auto& value, const auto& e) { return value + e * e; }));
 };
 
 template <typename T, int N>
 auto operator*(const Vector<T, N>& v, T val) -> Vector<T, N> {
   std::array<T, N> data;
-  for (int i = 0; i < N; i++) {
-    data[i] = v[i] * val;
-  }
+  std::transform(v.cbegin(), v.cend(), data.begin(), [&val](const auto& e) { return e * val; });
   return Vector<T, N>(data);
 }
 
 template <typename T, int N>
 auto operator/(const Vector<T, N>& v, T val) -> Vector<T, N> {
   std::array<T, N> data;
-  for (int i = 0; i < N; i++) {
-    data[i] = v[i] / val;
-  }
+  std::transform(v.cbegin(), v.cend(), data.begin(), [&val](const auto& e) { return e / val; });
   return Vector<T, N>(data);
 }
 
