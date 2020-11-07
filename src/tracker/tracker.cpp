@@ -1,4 +1,4 @@
-#include "pose_initializer.h"
+#include "tracker.h"
 
 #include <Eigen/Core>              // NOLINT
 #include <Eigen/Geometry>          // NOLINT
@@ -11,7 +11,7 @@
 #include "../util/cv_primitive.h"
 
 namespace tsfm {
-Pose PoseInitializer::operator()(const std::shared_ptr<Frame>& srcFrame, const std::shared_ptr<Frame>& dstFrame, const CameraModel& cm) const {
+Pose Tracker::operator()(const std::shared_ptr<Frame>& srcFrame, const std::shared_ptr<Frame>& dstFrame, const CameraModel& cm) const {
   ImageMatcher im({srcFrame->image(), dstFrame->image()});
   im.extractFeatures();
   const auto& matched = im.match();

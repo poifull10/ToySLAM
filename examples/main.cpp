@@ -2,8 +2,8 @@
 #include <glog/logging.h>
 #include <image/frame.h>
 #include <image/image.h>
-#include <initializer/pose_initializer.h>
 #include <matcher/image_matcher.h>
+#include <tracker/tracker.h>
 #include <util/load_data.h>
 
 #include <boost/filesystem.hpp>
@@ -68,13 +68,13 @@ int main(int argc, char** argv) {
     pinholeCamera.setIntrinsic(calib);
   }
 
-  tsfm::PoseInitializer pi;
+  tsfm::Tracker tracker;
   tsfm::FrameMaker maker;
   auto frames = maker.make(imageFiles);
 
   std::ofstream ofs("run.log");
   for (size_t i = 0; i < frames.size() - 1; i++) {
-    const auto pose = pi(frames[i], frames[i + 1], pinholeCamera);
+    const auto pose = tracker(frames[i], frames[i + 1], pinholeCamera);
 
     LOG(INFO) << i << " th estimation : ";
     LOG(INFO) << pose;

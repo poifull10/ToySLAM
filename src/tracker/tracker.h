@@ -8,9 +8,10 @@
 #include "../math/pose.h"
 
 namespace tsfm {
-class PoseInitializer {
+class Tracker {
  public:
-  PoseInitializer() = default;
+  Tracker() = default;
   Pose operator()(const std::shared_ptr<Frame>& src, const std::shared_ptr<Frame>& dst, const CameraModel& cm) const;
 };
+
 }  // namespace tsfm

@@ -3,27 +3,27 @@
 #include <gtest/gtest.h>  // NOLINT
 #include <image/frame.h>
 #include <image/image.h>
-#include <initializer/pose_initializer.h>
 #include <matcher/image_matcher.h>
+#include <tracker/tracker.h>
 #include <util/load_data.h>
 #include <yaml-cpp/yaml.h>  // NOLINT
 
 #include <iostream>
 
-TEST(PoseInitializer, estimatePose) {
-  tsfm::PoseInitializer pi;
+TEST(Tracker, estimatePose) {
+  tsfm::Tracker tracker;
   tsfm::FrameMaker maker;
-  auto frame1 = maker.make("tests/pose_initializer_dataset/000000.png");
-  auto frame2 = maker.make("tests/pose_initializer_dataset/000002.png");
+  auto frame1 = maker.make("tests/dataset/000000.png");
+  auto frame2 = maker.make("tests/dataset/000002.png");
 
-  tsfm::CalibrationLoader cl("tests/pose_initializer_dataset/cam.yaml");
+  tsfm::CalibrationLoader cl("tests/dataset/cam.yaml");
   const auto& [_, data] = cl.load();
-  const auto& answer = YAML::LoadFile("tests/pose_initializer_dataset/pose02.yaml");
+  const auto& answer = YAML::LoadFile("tests/dataset/pose02.yaml");
 
   tsfm::PinholeCamera pc;
   pc.setIntrinsic(data);
 
-  const auto pose = pi(frame1, frame2, pc);
+  const auto pose = tracker(frame1, frame2, pc);
   auto sign = 1.F;
   tsfm::Vec4 ans_quat{answer["rx"].as<double>(), answer["ry"].as<double>(), answer["rz"].as<double>(), answer["rw"].as<double>()};
   ans_quat = tsfm::normalize(ans_quat);
