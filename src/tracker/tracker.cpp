@@ -1,3 +1,5 @@
+#include "tracker.h"
+
 #include <Eigen/Core>              // NOLINT
 #include <Eigen/Geometry>          // NOLINT
 #include <opencv2/core/eigen.hpp>  // NOLINT
@@ -7,7 +9,6 @@
 #include "../image/frame.h"
 #include "../matcher/image_matcher.h"
 #include "../util/cv_primitive.h"
-#include "pose_initializer.h"
 
 namespace tsfm {
 Pose Tracker::operator()(const std::shared_ptr<Frame>& srcFrame, const std::shared_ptr<Frame>& dstFrame, const CameraModel& cm) const {
