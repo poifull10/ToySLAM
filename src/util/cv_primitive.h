@@ -1,7 +1,7 @@
 #pragma once
 #include <opencv2/opencv.hpp>  // NOLINT
 
-#include "../geo_primitive/vector.h"
+#include "../math/vector.h"
 
 namespace tsfm {
 auto cvMat2Vec3(const cv::Mat& p) -> Vec3;
