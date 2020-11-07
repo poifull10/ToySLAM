@@ -6,9 +6,9 @@
 
 TEST(ImageMatcher, match) {
   tsfm::FrameMaker maker;
-  auto frame1 = maker.make("tests/pose_initializer_dataset/000000.png");
-  auto frame2 = maker.make("tests/pose_initializer_dataset/000001.png");
-  auto frame3 = maker.make("tests/pose_initializer_dataset/000002.png");
+  auto frame1 = maker.make("tests/dataset/000000.png");
+  auto frame2 = maker.make("tests/dataset/000001.png");
+  auto frame3 = maker.make("tests/dataset/000002.png");
   tsfm::ImageMatcher im({frame1->image(), frame2->image()});
   im.extractFeatures();
   const auto matched = im.match();
