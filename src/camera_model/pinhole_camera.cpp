@@ -11,7 +11,7 @@ namespace tsfm {
 namespace {
 
 cv::Mat constructK(const PinholeCamera::IntrincsicParameter& intr) {
-  cv::Mat mat = CvMatMaker<TSFMFloatType>::makeEye(3, 3);
+  auto mat = CvMatMaker<TSFMFloatType>::makeEye(3, 3);
   mat.at<double>(0, 0) = intr.fx;
   mat.at<double>(0, 2) = intr.cx;
   mat.at<double>(1, 1) = intr.fy;
@@ -40,23 +40,23 @@ void PinholeCamera::setIntrinsic(const std::unordered_map<std::string, double>& 
 }
 
 Vec2 PinholeCamera::project(const Vec3& p) const {
-  const cv::Mat K = constructK(intrinsic_);
-  const cv::Mat vP = vec3ToCvMat(p);
+  const auto K = constructK(intrinsic_);
+  const auto vP = vec3ToCvMat(p);
   const cv::Mat projected = K * vP;
   const Vec2 projectedVec{projected.at<double>(0, 0), projected.at<double>(1, 0)};
   return projectedVec / projected.at<double>(2, 0);
 }
 
 Vec3 PinholeCamera::unproject(const Vec2& p) const {
-  const cv::Mat K = constructK(intrinsic_);
-  const cv::Mat vP = vec2ToCvMat(p, true);
+  const auto K = constructK(intrinsic_);
+  const auto vP = vec2ToCvMat(p, true);
   const cv::Mat unprojected = K.inv() * vP;
   const Vec3 unprojectedVec{unprojected.at<double>(0, 0), unprojected.at<double>(1, 0), unprojected.at<double>(2, 0)};
   return unprojectedVec / unprojectedVec[2];
 }
 
 cv::Mat PinholeCamera::K() const {
-  cv::Mat K = CvMatMaker<TSFMFloatType>::makeEye(3, 3);
+  auto K = CvMatMaker<TSFMFloatType>::makeEye(3, 3);
   K.at<double>(0, 0) = intrinsic_.fx;
   K.at<double>(1, 1) = intrinsic_.fy;
   K.at<double>(0, 2) = intrinsic_.cx;

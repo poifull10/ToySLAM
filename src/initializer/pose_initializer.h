@@ -10,7 +10,7 @@
 namespace tsfm {
 class PoseInitializer {
  public:
-  PoseInitializer() {}
+  PoseInitializer() = default;
   Pose operator()(const std::shared_ptr<Frame>& src, const std::shared_ptr<Frame>& dst, const CameraModel& cm) const;
 };
 }  // namespace tsfm
