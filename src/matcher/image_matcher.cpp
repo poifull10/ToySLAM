@@ -13,12 +13,12 @@ class ImageMatcher::Impl {
   ~Impl() = default;
 
   void extractFeatures(const std::vector<std::shared_ptr<Image>>& images) {
-    const auto siftDetector = cv::xfeatures2d::SURF::create(2000);
+    const auto detector = cv::ORB::create(2000);
 
     for (const auto& image : images) {
       std::vector<cv::KeyPoint> keypoint;
       cv::Mat desc;
-      siftDetector->detectAndCompute(image->image(), cv::noArray(), keypoint, desc);
+      detector->detectAndCompute(image->image(), cv::noArray(), keypoint, desc);
       imageIds_.emplace_back(image->id());
       keypoints_.emplace_back(keypoint);
       descriptors_.emplace_back(desc);
@@ -26,12 +26,12 @@ class ImageMatcher::Impl {
   }
 
   std::vector<MatchResult> match() {
-    const auto matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
+    const auto matcher = cv::BFMatcher(cv::NORM_HAMMING, false);
     std::vector<std::vector<cv::DMatch>> match;
     const int numOfMatch = 2;
     const float ratio_thresh = 0.7f;
 
-    matcher->knnMatch(descriptors_[0], descriptors_[1], match, numOfMatch);
+    matcher.knnMatch(descriptors_[0], descriptors_[1], match, numOfMatch);
 
     for (size_t i = 0; i < match.size(); i++) {
       if (match[i][0].distance >= ratio_thresh * match[i][1].distance) {
@@ -46,7 +46,7 @@ class ImageMatcher::Impl {
       cv::Mat desc = descriptors_[1].row(match[i][0].trainIdx);
       for (size_t j = 1; j < descriptors_.size() - 1; j++) {
         std::vector<std::vector<cv::DMatch>> nestMatch;
-        matcher->knnMatch(desc, descriptors_[j + 1], nestMatch, numOfMatch);
+        matcher.knnMatch(desc, descriptors_[j + 1], nestMatch, numOfMatch);
         if (nestMatch[0][0].distance >= ratio_thresh * nestMatch[0][1].distance) {
           continue;
         }
@@ -99,7 +99,7 @@ class ImageMatcher::Impl {
   std::vector<ImageID> imageIds_;
   std::vector<cv::Mat> descriptors_;
   std::vector<MatchResult> matches_;
-};  // namespace tsfm
+};
 
 ImageMatcher::ImageMatcher(const std::vector<std::shared_ptr<Image>>& images) : images_(images), impl_(std::make_unique<Impl>()) {}
 
