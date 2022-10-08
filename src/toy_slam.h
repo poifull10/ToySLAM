@@ -2,12 +2,13 @@
 
 #include <memory>
 
+#include "configuration.h"
 #include "io_data.h"
 
 namespace ToySLAM {
 class LiDARSLAM {
  public:
-  LiDARSLAM(ExtrinsicCalibration calibration);
+  LiDARSLAM(ExtrinsicCalibration calibration, Configuration configuration);
   LiDARSLAM(const LiDARSLAM&) = delete;
   LiDARSLAM& operator=(const LiDARSLAM&) = delete;
   LiDARSLAM(LiDARSLAM&&) = default;

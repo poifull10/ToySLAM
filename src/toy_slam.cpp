@@ -6,7 +6,7 @@
 namespace ToySLAM {
 class LiDARSLAM::Impl {
  public:
-  Impl(ExtrinsicCalibration calibration) : slam_(std::move(calibration)) {}
+  Impl(ExtrinsicCalibration calibration, Configuration configuration) : slam_(std::move(calibration), std::move(configuration)) {}
   Impl(const Impl&) = delete;
   Impl(Impl&&) = default;
   Impl& operator=(Impl&&) = default;
@@ -31,6 +31,6 @@ void LiDARSLAM::reset() {
   impl_->reset();
 }
 
-LiDARSLAM::LiDARSLAM(ExtrinsicCalibration calibration) : impl_(std::make_unique<LiDARSLAM::Impl>(std::move(calibration))) {}
+LiDARSLAM::LiDARSLAM(ExtrinsicCalibration calibration, Configuration configuration) : impl_(std::make_unique<LiDARSLAM::Impl>(std::move(calibration), std::move(configuration))) {}
 
 }  // namespace ToySLAM
