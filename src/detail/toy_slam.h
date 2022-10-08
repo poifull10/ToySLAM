@@ -18,5 +18,13 @@ class LiDARSLAM {
  private:
   ExtrinsicCalibration calibration_;
   Configuration configuration_;
+  std::optional<Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic>> map_;
+  std::optional<Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic>> subMap_;
+
+  bool isInitialized() const {
+    return !map_.has_value() && !subMap_.has_value();
+  }
+
+  SLAMResult initialize(const RangeFrame& frame);
 };
 }  // namespace ToySLAM::detail
