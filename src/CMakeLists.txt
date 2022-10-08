@@ -27,7 +27,7 @@ target_include_directories(${PROJECT_NAME}
   ${EIGEN3_INCLUDE_DIR}
 )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC ${OpenCV_LIBS} yaml-cpp Boost::filesystem Glog::Glog)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${OpenCV_LIBS} yaml-cpp Boost::filesystem Glog::Glog Sophus::Sophus)
 
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME}
