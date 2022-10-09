@@ -1,6 +1,7 @@
 add_library(
   ${PROJECT_NAME}
   toy_slam.cpp
+  detail/toy_slam.cpp
 )
 
 add_library(ToySLAM::ToySLAM ALIAS ${PROJECT_NAME})

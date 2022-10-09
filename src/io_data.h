@@ -27,8 +27,14 @@ struct RangeFrame {
   std::vector<StampedRangePoint> scans;
 };
 
+enum class SLAMStatus {
+  INITIALIZED,
+  DROPPED,
+  SUCCESS,
+  LOST
+};
 struct SLAMResult {
-  bool success;  // Lost is false
+  SLAMStatus status;
   std::chrono::nanoseconds timestamp;
   RangeFrame rectifiedRangeFrame;
   SE3 rigToOrigin;
